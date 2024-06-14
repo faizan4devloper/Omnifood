@@ -1,127 +1,42 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import { useNavigate} from "react-router-dom";
-import { Document, Page } from "react-pdf";
-import Select from "react-select";
-// import  NewClaimPage  from "./NewClaimPage"
-import "./Hero.css";
+Error: error:0308010C:digital envelope routines::unsupported
+    at new Hash (node:internal/crypto/hash:79:19)
+    at Object.createHash (node:crypto:139:10)
+    at module.exports (/home/ec2-user/environment/iAssure/node_modules/webpack/lib/util/createHash.js:90:53)
+    at NormalModule._initBuildHash (/home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:401:16)
+    at handleParseError (/home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:449:10)
+    at /home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:481:5
+    at /home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:342:12
+    at /home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:373:3
+    at iterateNormalLoaders (/home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:214:10)
+    at iterateNormalLoaders (/home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:221:10)
+    at /home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:236:3
+    at runSyncOrAsync (/home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:130:11)
+    at iterateNormalLoaders (/home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:232:2)
+    at Array.<anonymous> (/home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:205:4)
+    at Storage.finished (/home/ec2-user/environment/iAssure/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:55:16)
+    at /home/ec2-user/environment/iAssure/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:91:9
+/home/ec2-user/environment/iAssure/node_modules/react-scripts/scripts/start.js:19
+  throw err;
+  ^
 
-export function Hero({ onDocumentSelect }) {
-  const [claimType, setClaimType] = useState("");
-  const navigate = useNavigate();
-  const [documents, setDocuments] = useState([]);
-  const [selectedDocUrl, setSelectedDocUrl] = useState("");
-
-const handleClaimTypeChange = (e) => {
-    setClaimType(e.target.value);
-    if (e.target.value === "new") {
-      navigate("./NewClaimPage"); 
-    }
-  }
-  
-  // Mock function to fetch documents
-  const fetchDocuments = () => {
-    // This could be replaced with an actual API call
-    return new Promise((resolve, reject) => {
-      // Simulating an API call with setTimeout
-      setTimeout(() => {
-        const mockDocuments = [
-          {
-            name: "Document 1",
-            url: "https://css4.pub/2017/newsletter/drylab.pdf",
-          },
-          {
-            name: "Document 2",
-            url: "https://css4.pub/2017/newsletter/drylab.pdf",
-          },
-          {
-            name: "Document 3",
-            url: "https://css4.pub/2017/newsletter/drylab.pdf",
-          },
-        ];
-        resolve(mockDocuments);
-      }, 1000); // Simulating a 1 second delay
-    });
-  };
-
-  useEffect(() => {
-    fetchDocuments().then((data) => {
-      setDocuments(data);
-    });
-  }, []);
-
-  // const handleDocumentSelect = (event) => {
-  //   const selectedUrl = event.target.value;
-  //   const selectedDoc = documents.find((doc) => doc.url === selectedUrl);
-  //   setSelectedDocUrl(selectedDoc.url);
-  //   onDocumentSelect(selectedDoc);
-  // };
-  const handleDocumentSelect = (selected) => {
-    const selectedDoc = documents.find(doc => doc.name === selected.value);
-    setSelectedDocUrl(selectedDoc.url);
-    onDocumentSelect(selectedDoc);
-  }  
-
-  return (
-    <div className="hero">
-      <div className="hero-content">
-        <div className="claim-info">
-          <h1>iAssure Claim.</h1>
-          <p>
-           Empower your claim process to minimize Claim Denial and maximize reimbursements.
-          </p>
-        </div>
-        <div className="claim-form">
-          <form>
-            <h2>Submit Your Claim</h2>
-            <div className="form-group">
-              <label>Claim Documents</label>
-            </div>
-            <div className="form-group">
-              <label>Type of Claim:</label>
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="new"
-                    checked={claimType === "new"}
-                    // onChange={(e) => setClaimType(e.target.value)}
-                    // onClick={()=> navigate('/new-claim')}
-                    onChange={handleClaimTypeChange} 
-
-                  />
-                  New
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="existing"
-                    checked={claimType === "existing"}
-                    onChange={(e) => setClaimType(e.target.value)}
-                  />
-                  Existing
-                </label>
-              </div>
-            </div>
-            {claimType === "existing" && (
-              <div className="form-group">
-                <label>Select Existing Claim</label>
-                <Select 
-      options={documents.map(doc => ({value: doc.name, label: doc.name}))}
-      onChange={handleDocumentSelect}
-    />
-              </div>
-            )}
-            {selectedDocUrl && (
-              <div className="pdf-container">
-                <Document file={selectedDocUrl}>
-                  <Page pageNumber={1} />
-                </Document>
-              </div>
-            )}
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+Error: error:0308010C:digital envelope routines::unsupported
+    at new Hash (node:internal/crypto/hash:79:19)
+    at Object.createHash (node:crypto:139:10)
+    at module.exports (/home/ec2-user/environment/iAssure/node_modules/webpack/lib/util/createHash.js:90:53)
+    at NormalModule._initBuildHash (/home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:401:16)
+    at /home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:433:10
+    at /home/ec2-user/environment/iAssure/node_modules/webpack/lib/NormalModule.js:308:13
+    at /home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:367:11
+    at /home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:233:18
+    at context.callback (/home/ec2-user/environment/iAssure/node_modules/loader-runner/lib/LoaderRunner.js:111:13)
+    at /home/ec2-user/environment/iAssure/node_modules/babel-loader/lib/index.js:51:103 {
+  opensslErrorStack: [
+    'error:03000086:digital envelope routines::initialization error',
+    'error:0308010C:digital envelope routines::unsupported'
+  ],
+  library: 'digital envelope routines',
+  reason: 'unsupported',
+  code: 'ERR_OSSL_EVP_UNSUPPORTED'
 }
+
+Node.js v20.13.1
