@@ -388,3 +388,7 @@ function App() {
 }
 
 export default App;
+
+
+
+export 'withBreadcrumbs' (imported as 'withBreadcrumbs') was not found in 'react-router-breadcrumbs-hoc' (possible exports: default, getBreadcrumbs)
