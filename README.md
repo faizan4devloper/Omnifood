@@ -1,24 +1,59 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// FilesContext.js
+import React, { createContext, useState } from 'react';
+
+export const FilesContext = createContext();
+
+export const FilesProvider = ({ children }) => {
+  const [files, setFiles] = useState([]);
+
+  return (
+    <FilesContext.Provider value={{ files, setFiles }}>
+      {children}
+    </FilesContext.Provider>
+  );
+};
+
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { NewClaimPage } from './NewClaimPage';
+import { SummaryView } from './SummaryView';
+import { FilesProvider } from './FilesContext';
+
+function App() {
+  return (
+    <FilesProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<NewClaimPage />} />
+          <Route path="/summary" element={<SummaryView />} />
+        </Routes>
+      </Router>
+    </FilesProvider>
+  );
+}
+
+export default App;
+
+
+
+
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./NewClaimPage.css";
 import { Modal } from "./components/Landing/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FilesContext } from './FilesContext';
 
 export function NewClaimPage() {
   const [dragging, setDragging] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null); // State for selected file for preview
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const { files, setFiles } = useContext(FilesContext);
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    // Call API or handle form submission
-    setIsSubmitted(true); 
-
-    // Navigate to the SummaryView component after submission
     navigate("/summary");
   };
 
@@ -52,7 +87,7 @@ export function NewClaimPage() {
     const filesArray = Array.from(newFiles);
     const updatedFiles = filesArray.map((file) => ({
       file: file,
-      id: Math.random().toString(36).substr(2, 9), // generate a unique ID for each file
+      id: Math.random().toString(36).substr(2, 9),
     }));
     setFiles((prevFiles) => [...prevFiles, ...updatedFiles]);
   };
@@ -148,15 +183,47 @@ export function NewClaimPage() {
 
 
 
+import React, { useContext, useState } from 'react';
+import { FilesContext } from './FilesContext';
+import './SummaryView.css'; // Create a corresponding CSS file for styling
 
+export function SummaryView() {
+  const { files } = useContext(FilesContext);
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const handleFileClick = (file) => {
+    setSelectedFile(file);
+  };
 
-
-
-
-
-
-
-
-App___________-_-_-_-_-_-_-__-
-
+  return (
+    <div className="summary-container">
+      <div className="file-list">
+        {files.map((file) => (
+          <div key={file.id} className="file-item" onClick={() => handleFileClick(file.file)}>
+            <span>{file.file.name}</span>
+          </div>
+        ))}
+      </div>
+      <div className="file-preview">
+        {selectedFile && (
+          <div className="preview-content">
+            <h2>{selectedFile.name}</h2>
+            {selectedFile.type.startsWith("image/") ? (
+              <img
+                src={URL.createObjectURL(selectedFile)}
+                alt={selectedFile.name}
+              />
+            ) : (
+              <iframe
+                src={URL.createObjectURL(selectedFile)}
+                width="100%"
+                height="400px"
+                title="file-preview"
+              />
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
