@@ -1,64 +1,3 @@
-import React, { useState } from "react";
-import "./Login.css";
-
-export function Login({ onLogin }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simple authentication check
-    if (username === "test" && password === "1212") {
-      onLogin();
-    } else {
-      alert("Invalid username or password");
-    }
-  };
-
-  return (
-    <div className="login-container">
-      <div className="login-content">
-        <form onSubmit={handleSubmit}>
-          <h2>Login</h2>
-          <div className="input-group">
-            <label>
-              <i className="fas fa-user"></i> Username
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
-            />
-          </div>
-          <div className="input-group">
-            <label>
-              <i className="fas fa-lock"></i> Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-            />
-          </div>
-          <button type="submit">
-            <i className="fas fa-sign-in-alt"></i> Login
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-
-
-
-
-
-
-
-
 /* Login.css */
 
 .login-container {
@@ -70,11 +9,11 @@ export function Login({ onLogin }) {
 }
 
 .login-content {
-  width: 300px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.9);
+  width: 350px; /* Slightly increased width for a more spacious form */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.23); /* Updated box shadow */
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
 }
 
@@ -90,13 +29,13 @@ h2 {
 }
 
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 label {
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #666;
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #555;
   display: flex;
   align-items: center;
 }
@@ -112,15 +51,17 @@ label i {
   border-radius: 4px;
   font-size: 14px;
   color: #333;
+  transition: all 0.3s ease-in-out; /* Smooth transition */
 }
 
 .login-content input:focus {
   border-color: #1f77f6;
   outline: none;
+  box-shadow: 0 0 8px rgba(31, 119, 246, 0.6);
 }
 
 button {
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 4px;
   background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
@@ -130,6 +71,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition */
 }
 
 button i {
@@ -138,4 +80,5 @@ button i {
 
 button:hover {
   background: linear-gradient(90deg, #5a2ba6 0%, #1559b3 100%);
+  transform: scale(1.05); /* Slightly enlarge button on hover */
 }
