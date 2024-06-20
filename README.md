@@ -8,7 +8,7 @@ export function Login({ onLogin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Simple authentication check
-    if (username === "user" && password === "password") {
+    if (username === "test" && password === "1212") {
       onLogin();
     } else {
       alert("Invalid username or password");
@@ -17,6 +17,7 @@ export function Login({ onLogin }) {
 
   return (
     <div className="login-container">
+        <div className="login-content">
       <form onSubmit={handleSubmit}>
         <h2>Login</h2>
         <div>
@@ -38,6 +39,7 @@ export function Login({ onLogin }) {
         <button type="submit">Login</button>
       </form>
     </div>
+        </div>
   );
 }
 
@@ -45,20 +47,19 @@ export function Login({ onLogin }) {
 
 
 
+.login-container{
+      background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
+      height: 100vh;
 
-
-
-
-/* Login.css */
-
-.login-container {
+}
+.login-content {
   width: 300px;
+  height: 300px;
   margin: 100px auto;
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background:rgba(0, 0, 0, 0.5);
 }
 
 form {
@@ -70,7 +71,7 @@ label {
   margin-bottom: 5px;
 }
 
-input {
+.login-content input {
   margin-bottom: 15px;
   padding: 8px;
   border: 1px solid #ccc;
@@ -81,7 +82,7 @@ button {
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
   color: #fff;
   cursor: pointer;
 }
@@ -89,46 +90,3 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useState } from "react";
-import './App.css';
-import { UploadedDoc } from "./components/UploadedDoc";
-import { Chat } from "./components/Chat";
-import { Insights } from "./components/Insights";
-import { Login } from "./components/Login";
-
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  return (
-    <div className="app">
-      {isLoggedIn ? (
-        <div className="main-container">
-          <UploadedDoc />
-          <Chat />
-          <Insights />
-        </div>
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
-    </div>
-  );
-}
-
-export default App;
