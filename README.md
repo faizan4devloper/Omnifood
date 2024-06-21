@@ -8,12 +8,14 @@ import { Landing } from "./components/Landing";
 
 function App() {
   const [view, setView] = useState('login'); // 'login', 'landing', 'main'
+  const [advisorType, setAdvisorType] = useState('');
 
   const handleLogin = () => {
     setView('landing');
   };
 
-  const handleEnterMain = () => {
+  const handleEnterMain = (type) => {
+    setAdvisorType(type);
     setView('main');
   };
 
@@ -23,6 +25,7 @@ function App() {
       {view === 'landing' && <Landing onEnterMain={handleEnterMain} />}
       {view === 'main' && (
         <div className="main-container">
+          <h2 className="advisor-heading">{advisorType} Advisor</h2>
           <UploadedDoc />
           <Chat />
           <Insights />
@@ -45,39 +48,6 @@ export default App;
 
 
 
-
-
-
-
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
-
-body,
-html {
-  background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", Arial, sans-serif;
-  scroll-behavior: smooth;
-  overflow: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-body::-webkit-scrollbar {
-  width: 0px; /* Remove the scrollbar width */
-  background: transparent; /* Optional: Just to ensure transparency */
-}
-.main-container{
-  display: flex;
-  justify-content: space-between;
-  /*height: 100vh;*/
-  /*align-items: center;*/
-}
-
-
-
-
-
-
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -86,30 +56,55 @@ import "./Landing.css";
 export function Landing({ onEnterMain }) {
   return (
     <div className="landing">
-      <h2 onClick={onEnterMain}>UK Citizen Advisor</h2>
+      <h2>UK Citizen Advisor</h2>
       <div className="cards-container">
         <div className="card">
           <h4>Education Advisor</h4>
           <p>Description about Education Advisor.</p>
-          <button onClick={onEnterMain}>
-<FontAwesomeIcon icon={faArrowRight} />
-</button>
+          <button onClick={() => onEnterMain('Education')}>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
         </div>
         <div className="card">
           <h4>Job Advisor</h4>
           <p>Description about Job Advisor.</p>
-          <button onClick={onEnterMain}>
-<FontAwesomeIcon icon={faArrowRight} />
-</button>
+          <button onClick={() => onEnterMain('Job')}>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
         </div>
         <div className="card">
           <h4>Health Advisor</h4>
           <p>Description about Health Advisor.</p>
-          <button onClick={onEnterMain}>
-<FontAwesomeIcon icon={faArrowRight} />
-</button>
+          <button onClick={() => onEnterMain('Health')}>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
         </div>
       </div>
     </div>
   );
+}
+
+
+
+
+
+
+
+
+
+
+/* App.css */
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* height: 100vh; */
+  /* justify-content: space-between; */
+}
+
+.advisor-heading {
+  font-size: 2rem;
+  margin: 20px 0;
+  color: #333; /* Color for the heading */
 }
