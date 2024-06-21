@@ -94,6 +94,62 @@ export default App;
 
 
 
+
+
+
+
+
+
+
+
+/* App.css */
+
+.breadcrumbs {
+  background-color: #f2f2f2;
+  padding: 10px;
+}
+
+.breadcrumbs ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumbs ul li {
+  display: inline;
+}
+
+.breadcrumbs ul li:not(:first-child)::before {
+  content: ">";
+  margin: 0 5px;
+}
+
+.breadcrumbs ul li a {
+  text-decoration: none;
+  color: #333;
+  padding: 5px;
+}
+
+.breadcrumbs ul li a:hover {
+  color: #1f77f6; /* Change color on hover */
+}
+
+.breadcrumbs ul li span {
+  color: #777;
+  padding: 5px;
+}
+
+.breadcrumbs ul li.active a {
+  color: #1f77f6; /* Change color for active breadcrumb */
+}
+
+.breadcrumbs ul li.active a:hover {
+  color: #1559b3; /* Change color for active breadcrumb on hover */
+}
+
+
+
+
 import React, { useState } from "react";
 import './App.css';
 import { UploadedDoc } from "./components/UploadedDoc";
