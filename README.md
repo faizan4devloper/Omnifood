@@ -1,63 +1,66 @@
-import React from "react";
-import "./Landing.css";
+/* Landing.css */
 
-export function Landing({onEnterMain}){
-    return (
-        <div className="landing">
-            <h2 onClick={onEnterMain}>UK Citizen Advisor</h2>
-            <div className="cards-container">
-                <div className="card">
-                   <h4>Education Advisor</h4>
-                   <p>Description</p>
-                </div>
-                <div className="card">
-                   <h4>Job Advisor</h4>
-                   <p>Description</p>
-                </div>
-                <div className="card">
-                   <h4>Health Advisor</h4>
-                   <p>Description</p>
-                </div>
-            </div>
-        </div>
-        );
-}
-
-
-
-
-
-
-
-.cards-container{
+.cards-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin:180px auto;
+    margin: 180px auto;
     margin-bottom: 0;
-    
 }
 
-.landing h2{
-    text-align:center;
+.landing h2 {
+    text-align: center;
     cursor: pointer;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333; /* Color for the heading */
 }
 
-.cards-container .card{
+.cards-container .card {
     border-radius: 6px;
     width: 300px;
     height: 220px;
-    background:rgba(0, 0, 0, 0.5);
-      box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
-
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
     color: #fff;
-    justify-content: center;
-    margin:20px;
+    margin: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
-.card h4{
-    text-align:center;
+.cards-container .card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(31, 119, 246, 0.7);
+    z-index: 0;
+    transition: bottom 0.3s ease;
 }
-.card p{
+
+.cards-container .card:hover::before {
+    bottom: 0;
+}
+
+.cards-container .card:hover {
+    transform: scale(1.05);
+}
+
+.card h4 {
+    position: relative;
+    z-index: 1;
     text-align: center;
+    color: #1f77f6; /* Color for the heading */
+    margin-top: 20px;
+}
+
+.card p {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #ddd; /* Color for the description */
+    margin: 10px 20px;
 }
