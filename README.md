@@ -19,8 +19,20 @@ function App() {
     setView('main');
   };
 
+  const handleGoBack = () => {
+    if (view === 'landing') {
+      setView('login');
+    } else if (view === 'main') {
+      setView('landing');
+    }
+  };
+
   return (
     <div className="app">
+      <div className="breadcrumbs">
+        <button onClick={handleGoBack}>Go Back</button>
+        {view === 'main' && <span> / {advisorType} Advisor</span>}
+      </div>
       {view === 'login' && <Login onLogin={handleLogin} />}
       {view === 'landing' && <Landing onEnterMain={handleEnterMain} />}
       {view === 'main' && (
@@ -36,75 +48,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import "./Landing.css";
-
-export function Landing({ onEnterMain }) {
-  return (
-    <div className="landing">
-      <h2>UK Citizen Advisor</h2>
-      <div className="cards-container">
-        <div className="card">
-          <h4>Education Advisor</h4>
-          <p>Description about Education Advisor.</p>
-          <button onClick={() => onEnterMain('Education')}>
-            <FontAwesomeIcon icon={faArrowRight} />
-          </button>
-        </div>
-        <div className="card">
-          <h4>Job Advisor</h4>
-          <p>Description about Job Advisor.</p>
-          <button onClick={() => onEnterMain('Job')}>
-            <FontAwesomeIcon icon={faArrowRight} />
-          </button>
-        </div>
-        <div className="card">
-          <h4>Health Advisor</h4>
-          <p>Description about Health Advisor.</p>
-          <button onClick={() => onEnterMain('Health')}>
-            <FontAwesomeIcon icon={faArrowRight} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-
-
-
-
-
-
-
-
-/* App.css */
-
-.main-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* height: 100vh; */
-  /* justify-content: space-between; */
-}
-
-.advisor-heading {
-  font-size: 2rem;
-  margin: 20px 0;
-  color: #333; /* Color for the heading */
-}
