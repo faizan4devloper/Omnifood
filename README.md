@@ -19,7 +19,7 @@
     border-radius: 10px;
     width: 300px;
     height: 220px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(245, 245, 245);
     box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
     color: #fff;
     margin: 20px;
@@ -35,7 +35,7 @@
     bottom: -100%;
     width: 100%;
     height: 100%;
-    background: rgba(31, 119, 246, 0.7);
+    background: rgba(135, 206, 250, 0.7);
     z-index: 0;
     transition: bottom 0.3s ease;
 }
@@ -54,9 +54,7 @@
     text-align: center;
     color: #1f77f6; /* Color for the heading */
     margin-top: 20px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%),
-    linear-gradient(0deg, rgba(23, 23, 25, 0.3), rgba(23, 23, 25, 0.3));
-  backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
+    
 }
 
 .card p {
