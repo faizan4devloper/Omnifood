@@ -1,5 +1,3 @@
-/* Landing.css */
-
 .cards-container {
     display: flex;
     justify-content: center;
@@ -14,10 +12,11 @@
     font-size: 2rem;
     margin-bottom: 20px;
     color: #333; /* Color for the heading */
+    
 }
 
 .cards-container .card {
-    border-radius: 6px;
+    border-radius: 10px;
     width: 300px;
     height: 220px;
     background: rgba(0, 0, 0, 0.5);
@@ -55,6 +54,9 @@
     text-align: center;
     color: #1f77f6; /* Color for the heading */
     margin-top: 20px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%),
+    linear-gradient(0deg, rgba(23, 23, 25, 0.3), rgba(23, 23, 25, 0.3));
+  backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
 }
 
 .card p {
