@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faBars } from "@fortawesome/free-solid-svg-icons";
 
 import "./Chat.css";
 
 export function Chat() {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState("");
-    const [mostAskedQuestions, setMostAskedQuestions] = useState([
+    const [mostAskedQuestions] = useState([
         "What is your return policy?",
         "How do I track my order?",
         "Can I purchase items again?",
         "What are the shipping options?",
         "How do I change my account details?",
     ]);
+    const [showQuestions, setShowQuestions] = useState(false);
 
     const handleSend = () => {
         if (userInput.trim()) {
@@ -31,20 +32,30 @@ export function Chat() {
     const handleQuestionClick = (question) => {
         setUserInput(question);
         handleSend();
+        setShowQuestions(false);
+    };
+
+    const toggleQuestions = () => {
+        setShowQuestions(!showQuestions);
     };
 
     return (
         <div className="chat-container">
-            <div className="chat-sidebar">
-                <h4>Most Asked Questions</h4>
-                <ul>
-                    {mostAskedQuestions.map((question, index) => (
-                        <li key={index} onClick={() => handleQuestionClick(question)}>
-                            {question}
-                        </li>
-                    ))}
-                </ul>
+            <div className="hamburger-menu" onClick={toggleQuestions}>
+                <FontAwesomeIcon icon={faBars} />
             </div>
+            {showQuestions && (
+                <div className="most-asked-questions">
+                    <h4>Most Asked Questions</h4>
+                    <ul>
+                        {mostAskedQuestions.map((question, index) => (
+                            <li key={index} onClick={() => handleQuestionClick(question)}>
+                                {question}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
             <div className="chat-content">
                 <h3>Live Conversation</h3>
                 <div className="chat-messages">
@@ -76,62 +87,31 @@ export function Chat() {
 
 
 
-
-
-
-
-
 .chat-container {
-    display: flex;
-    height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
-}
-
-.chat-sidebar {
-    width: 250px;
-    background-color: #1f1f1f;
-    color: white;
+    margin: 80px 0 0 10px;
+    border-radius: 10px;
+    width: 400px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    height: 500px;
+    position: relative;
 }
 
-.chat-sidebar h4 {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.chat-sidebar ul {
-    list-style: none;
-    padding: 0;
-    flex-grow: 1;
-    overflow-y: auto;
-}
-
-.chat-sidebar li {
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #333;
-    border-radius: 4px;
+.hamburger-menu {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.chat-sidebar li:hover {
-    background-color: #555;
-}
-
-.chat-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #f9f9f9;
+    z-index: 10;
 }
 
 h3 {
     text-align: center;
     margin: 10px 0;
-    color: #333;
+    color: #fff;
 }
 
 .chat-messages {
@@ -140,14 +120,13 @@ h3 {
     margin: 20px;
     border-radius: 5px;
     overflow-y: auto;
-    background-color: #fff;
+    background-color: #f9f9f9;
 }
 
 .chat-message {
     padding: 10px;
     margin: 5px 0;
     border-radius: 4px;
-    transition: background-color 0.3s ease-in-out;
 }
 
 .chat-message.user {
@@ -158,10 +137,6 @@ h3 {
 .chat-message.bot {
     background-color: #f8d7da;
     text-align: left;
-}
-
-.chat-message:hover {
-    background-color: #e9ecef;
 }
 
 .chat-input {
@@ -178,11 +153,6 @@ h3 {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    transition: border-color 0.3s ease-in-out;
-}
-
-.chat-input input:focus {
-    border-color: #1f77f6;
 }
 
 .chat-input button {
@@ -193,9 +163,45 @@ h3 {
     background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
 }
 
 .chat-input button:hover {
     background-color: #0056b3;
+}
+
+.most-asked-questions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    color: white;
+}
+
+.most-asked-questions h4 {
+    margin-bottom: 20px;
+}
+
+.most-asked-questions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.most-asked-questions li {
+    padding: 10px 20px;
+    margin: 5px 0;
+    background-color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.most-asked-questions li:hover {
+    background-color: #555;
 }
