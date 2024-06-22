@@ -11,6 +11,8 @@ export function Chat() {
         "What is your return policy?",
         "How do I track my order?",
         "Can I purchase items again?",
+        "What are the shipping options?",
+        "How do I change my account details?",
     ]);
 
     const handleSend = () => {
@@ -33,25 +35,7 @@ export function Chat() {
 
     return (
         <div className="chat-container">
-            <h3>Live Conversation</h3>
-            <div className="chat-messages">
-                {messages.map((message, index) => (
-                    <div key={index} className={`chat-message ${message.sender}`}>
-                        {message.text}
-                    </div>
-                ))}
-            </div>
-            <div className="chat-input">
-                <input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                    placeholder="Type a message..."
-                />
-                <button onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
-            </div>
-            <div className="most-asked-questions">
+            <div className="chat-sidebar">
                 <h4>Most Asked Questions</h4>
                 <ul>
                     {mostAskedQuestions.map((question, index) => (
@@ -61,6 +45,26 @@ export function Chat() {
                     ))}
                 </ul>
             </div>
+            <div className="chat-content">
+                <h3>Live Conversation</h3>
+                <div className="chat-messages">
+                    {messages.map((message, index) => (
+                        <div key={index} className={`chat-message ${message.sender}`}>
+                            {message.text}
+                        </div>
+                    ))}
+                </div>
+                <div className="chat-input">
+                    <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                        placeholder="Type a message..."
+                    />
+                    <button onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
+                </div>
+            </div>
         </div>
     );
 }
@@ -69,21 +73,65 @@ export function Chat() {
 
 
 
+
+
+
+
+
+
+
+
 .chat-container {
-    background-color: rgba(0, 0, 0, 0.5);
-    margin: 80px 0 0 10px;
-    border-radius: 10px;
-    width: 400px;
-    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    height: 600px; /* Increased height to accommodate questions */
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-h3, h4 {
+.chat-sidebar {
+    width: 250px;
+    background-color: #1f1f1f;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.chat-sidebar h4 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.chat-sidebar ul {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.chat-sidebar li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.chat-sidebar li:hover {
+    background-color: #555;
+}
+
+.chat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+}
+
+h3 {
     text-align: center;
     margin: 10px 0;
-    color: #fff;
+    color: #333;
 }
 
 .chat-messages {
@@ -92,7 +140,7 @@ h3, h4 {
     margin: 20px;
     border-radius: 5px;
     overflow-y: auto;
-    background-color: #f9f9f9;
+    background-color: #fff;
 }
 
 .chat-message {
@@ -150,33 +198,4 @@ h3, h4 {
 
 .chat-input button:hover {
     background-color: #0056b3;
-}
-
-.most-asked-questions {
-    padding: 10px;
-    margin: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-}
-
-.most-asked-questions h4 {
-    color: #333;
-}
-
-.most-asked-questions ul {
-    list-style: none;
-    padding: 0;
-}
-
-.most-asked-questions li {
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.most-asked-questions li:hover {
-    background-color: #ccc;
 }
