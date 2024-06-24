@@ -205,3 +205,79 @@ export function Insights({ selectedQuestion }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import "./Insights.css";
+
+export function Insights({ selectedQuestion }) {
+  const [localities] = useState([
+    { value: "England", label: "England" },
+    { value: "Los Angeles", label: "Los Angeles" },
+    { value: "Chicago", label: "Chicago" },
+    { value: "Houston", label: "Houston" },
+    { value: "Phoenix", label: "Phoenix" }
+  ]);
+  const [selectedLocality, setSelectedLocality] = useState(null);
+  const [questionInfo, setQuestionInfo] = useState(null);
+
+  // Simulated data for question info
+  const questionData = {
+    "School Transfers": "Information about School Transfers...",
+    "School Placements": "Information about School Placements...",
+    "Teaching Methodology": "Information about Teaching Methodology...",
+    "SEN/Disability": "Information about SEN/Disability...",
+    "Enrichment & Extra Curr.": "Information about Enrichment & Extra Curricular...",
+    "Transportation": "Information about Transportation..."
+  };
+
+  useEffect(() => {
+    // Update question info when selected question changes
+    if (selectedQuestion) {
+      setQuestionInfo(questionData[selectedQuestion]);
+    } else {
+      setQuestionInfo(null);
+    }
+  }, [selectedQuestion]);
+
+  const handleLocalityChange = (selectedOption) => {
+    setSelectedLocality(selectedOption);
+  };
+
+  return (
+    <div className="insights-container">
+      <h3>Insights</h3>
+      <div className="locality-section">
+        <h4>Choose Your Locality</h4>
+        <Select
+          className="dropdown"
+          value={selectedLocality}
+          onChange={handleLocalityChange}
+          options={localities}
+          placeholder="Select a locality"
+          isClearable
+        />
+        {selectedLocality && <div className="selected-message">You selected: {selectedLocality.label}</div>}
+      </div>
+      {selectedQuestion && (
+        <div className="selected-question">
+          <h4>Information about:</h4>
+          <p>{selectedQuestion}</p>
+        </div>
+      )}
+    </div>
+  );
+}
