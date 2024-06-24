@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faBars, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 import "./Chat.css";
 
@@ -42,7 +42,7 @@ export function Chat() {
     return (
         <div className="chat-container">
             <div className="hamburger-menu" onClick={toggleQuestions}>
-                <FontAwesomeIcon icon={faBars} />
+                <FontAwesomeIcon icon={showQuestions ? faTimes : faBars}/>
             </div>
             {showQuestions && (
                 <div className="most-asked-questions">
@@ -116,8 +116,9 @@ h3 {
 
 .chat-messages {
     flex: 1;
+    height: 250px;
     padding: 10px;
-    margin: 20px;
+    margin:60px 20px;
     border-radius: 5px;
     overflow-y: auto;
     background-color: #f9f9f9;
@@ -175,8 +176,9 @@ h3 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
     display: flex;
+    border-radius: 10px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
