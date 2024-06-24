@@ -1,70 +1,64 @@
-.insights-container {
-    background-color: rgba(0, 0, 0, 0.5);
-    margin: 80px 0 0 10px;
-    border-radius: 10px;
-    width: 400px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out;
-}
+import React, { useState } from "react";
+import "./Insights.css";
 
-.insights-container:hover {
-    transform: scale(1.02);
-}
+export function Insights() {
+    const [localities] = useState(["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]);
+    const [filteredLocalities, setFilteredLocalities] = useState(localities);
+    const [selectedLocality, setSelectedLocality] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
-.insights-container h3 {
-    text-align: center;
-    color: #fff;
-}
+    const handleLocalityClick = (locality) => {
+        setSelectedLocality(locality);
+        setShowDropdown(false);
+    };
 
-.locality-section {
-    margin-top: 20px;
-    text-align: center;
-    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in-out;
-}
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        const filtered = localities.filter(locality =>
+            locality.toLowerCase().includes(e.target.value.toLowerCase())
+        );
+        setFilteredLocalities(filtered);
+    };
 
-.locality-section h4 {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
+    const toggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    };
 
-.locality-dropdown {
-    width: 80%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    background: #fff;
-    color: #333;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.locality-dropdown:hover {
-    background-color: #f1f1f1;
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.selected-message {
-    margin-top: 15px;
-    color: #fff;
-    font-size: 1.2em;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    return (
+        <div className="insights-container">
+            <h3>Insights</h3>
+            <div className="locality-section">
+                <h4>Choose Your Locality</h4>
+                <div className="dropdown">
+                    <button className="dropdown-button" onClick={toggleDropdown}>
+                        {selectedLocality ? selectedLocality : "Select a locality"}
+                    </button>
+                    {showDropdown && (
+                        <div className="dropdown-content">
+                            <input
+                                type="text"
+                                placeholder="Search localities..."
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                className="dropdown-search"
+                            />
+                            <ul>
+                                {filteredLocalities.map((locality, index) => (
+                                    <li
+                                        key={index}
+                                        className="dropdown-item"
+                                        onClick={() => handleLocalityClick(locality)}
+                                    >
+                                        {locality}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+                {selectedLocality && <div className="selected-message">You selected: {selectedLocality}</div>}
+            </div>
+        </div>
+    );
 }
