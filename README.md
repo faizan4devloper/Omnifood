@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Select from "react-select";
 import "./Modal.css";
 
-function Modal({ isOpen, onClose, onLocalitySelect, children }) {
+function Modal({ isOpen, onClose, onLocalityApply, children }) {
   const [localities] = useState([
     { value: "England", label: "England" },
     { value: "Los Angeles", label: "Los Angeles" },
@@ -15,9 +15,12 @@ function Modal({ isOpen, onClose, onLocalitySelect, children }) {
   
   const handleLocalityChange = (selectedOption) => {
     setSelectedLocality(selectedOption);
-    onLocalitySelect(selectedOption);
   };
   
+  const handleApplyClick = () => {
+    onLocalityApply(selectedLocality);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -38,6 +41,9 @@ function Modal({ isOpen, onClose, onLocalitySelect, children }) {
         <button className="modal-close" onClick={onClose}>
           &times;
         </button>
+        <button className="apply-button" onClick={handleApplyClick} disabled={!selectedLocality}>
+          Apply
+        </button>
         {children}
       </div>
     </div>
@@ -45,6 +51,7 @@ function Modal({ isOpen, onClose, onLocalitySelect, children }) {
 }
 
 export default Modal;
+
 
 
 
@@ -76,8 +83,9 @@ function MainContainer({ advisorType }) {
     setIsModalOpen(false);
   };
 
-  const handleLocalitySelect = (locality) => {
+  const handleLocalityApply = (locality) => {
     setSelectedLocality(locality);
+    setIsModalOpen(false);
   };
 
   return (
@@ -89,7 +97,7 @@ function MainContainer({ advisorType }) {
       <Chat onQuestionClick={handleQuestionClick} />
       <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
       
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} onLocalitySelect={handleLocalitySelect}>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} onLocalityApply={handleLocalityApply}>
         {/* You can pass additional children here if needed */}
       </Modal>
     </div>
