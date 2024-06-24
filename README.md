@@ -237,3 +237,80 @@ export function Chat({ onQuestionClick, questionInfo }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import "./Insights.css";
+
+export function Insights({ selectedQuestion, onSendQuestionInfo }) {
+  const [localities] = useState([
+    { value: "England", label: "England" },
+    { value: "Los Angeles", label: "Los Angeles" },
+    { value: "Chicago", label: "Chicago" },
+    { value: "Houston", label: "Houston" },
+    { value: "Phoenix", label: "Phoenix" }
+  ]);
+  const [selectedLocality, setSelectedLocality] = useState(null);
+  const [questionInfo, setQuestionInfo] = useState(null);
+
+  // Simulated data for question info
+  const questionData = {
+    "School Transfers": "Information about School Transfers...",
+    "School Placements": "How to appeal a school placement decision.",
+    "Teaching Methodology": "Information about Teaching Methodology...",
+    "SEN/Disability": "Information about SEN/Disability...",
+    "Enrichment & Extra Curr.": "Information about Enrichment & Extra Curricular...",
+    "Transportation": "Information about Transportation..."
+  };
+
+  useEffect(() => {
+    // Update question info when selected question changes
+    if (selectedQuestion) {
+      setQuestionInfo(questionData[selectedQuestion]);
+    } else {
+      setQuestionInfo(null);
+    }
+  }, [selectedQuestion]);
+
+  const handleLocalityChange = (selectedOption) => {
+    setSelectedLocality(selectedOption);
+  };
+
+  const handleSendQuestionInfo = () => {
+    if (questionInfo) {
+      onSendQuestionInfo(questionInfo);
+    }
+  };
+
+  return (
+    <div className="insights-container">
+      <h3>Insights</h3>
+      <div className="locality-section">
+        <h4>Choose Your Locality</h4>
+        <Select
+          className="dropdown"
+          value={selectedLocality}
+          onChange={handleLocalityChange}
+          options={localities}
+          placeholder="Select a locality"
+          isClearable
+        />
+        {selectedLocality && <div className="selected-message">You selected: {selectedLocality.label}</div>}
+      </div>
+      {questionInfo && (
+        <div className="selected-question">
+          <h4>{selectedQuestion}</h4>
+          <p>{questionInfo}</p>
+          <button onClick={handleSendQuestionInfo}>Send to Chat</button>
+        </div>
+      )}
+    </div>
+  );
+}
