@@ -1,116 +1,87 @@
-import { useState } from 'react';
-import Select from 'react-select';
-import "./Modal.css";
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import "./Chat.css";
 
-const postcodeOptions = [
-  { value: "SW1A 1AA", label: "SW1A 1AA - Westminster" },
-  { value: "E1 6AN", label: "E1 6AN - Shoreditch" },
-  { value: "M1 1AE", label: "M1 1AE - Manchester" },
-  { value: "E14 0HE", label: "E14 0HE - London Borough of Tower Hamlets" },
-  // Add more postcode options as required
-];
+export function Chat({ onQuestionClick, questionInfo }) {
+  const [messages, setMessages] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [mostAskedQuestions] = useState([
+    "School Transfers",
+    "School Placements",
+    "Teaching Methodology",
+    "SEN/Disability",
+    "Enrichment & Extra Curr.",
+    "Transportation"
+  ]);
+  const [showQuestions, setShowQuestions] = useState(false);
 
-function Modal({ isOpen, onClose, onPostcodeApply, children }) {
-  const [selectedPostcode, setSelectedPostcode] = useState(null);
-
-  const handlePostcodeChange = (selectedOption) => {
-    setSelectedPostcode(selectedOption);
+  const handleSend = () => {
+    if (userInput.trim()) {
+      const newMessage = { sender: "user", text: userInput };
+      setMessages([...messages, newMessage]);
+      setUserInput("");
+      // Simulate bot response
+      setTimeout(() => {
+        const botMessage = { sender: "bot", text: "This is a bot response." };
+        setMessages(prevMessages => [...prevMessages, botMessage]);
+      }, 1000);
+    }
   };
 
-  const handleApplyClick = () => {
-    onPostcodeApply(selectedPostcode ? selectedPostcode.value : "");
+  const handleQuestionClick = (question) => {
+    setUserInput(question);
+    handleSend();
+    setShowQuestions(false);
+    onQuestionClick(question); // Notify parent component
   };
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    // Update userInput when questionInfo changes
+    if (questionInfo) {
+      setUserInput(questionInfo);
+    }
+  }, [questionInfo]);
+
+  const toggleQuestions = () => {
+    setShowQuestions(!showQuestions);
+  };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className="postcode-section">
-          <h4>Select Your UK Postcode</h4>
-          <Select
-            className="dropdown"
-            value={selectedPostcode}
-            onChange={handlePostcodeChange}
-            options={postcodeOptions}
-            placeholder="Select a postcode"
-            isClearable
-          />
-          {selectedPostcode && <div className="selected-message">You selected: {selectedPostcode.label}</div>}
+    <div className="chat-container">
+      <div className="hamburger-menu" onClick={toggleQuestions}>
+        <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
+      </div>
+      <div className={`most-asked-questions ${showQuestions ? 'show' : ''}`}>
+        <h4>Most Asked Questions</h4>
+        <ul>
+          {mostAskedQuestions.map((question, index) => (
+            <li key={index} onClick={() => handleQuestionClick(question)}>
+              {question}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="chat-content">
+        <h3>Live Conversation</h3>
+        <div className="chat-messages">
+          {messages.map((message, index) => (
+            <div key={index} className={`chat-message ${message.sender}`}>
+              {message.text}
+            </div>
+          ))}
         </div>
-        <button className="modal-close" onClick={onClose}>
-          &times;
-        </button>
-        <button className="apply-button" onClick={handleApplyClick} disabled={!selectedPostcode}>
-          Apply
-        </button>
-        {children}
+        <div className="chat-input">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && handleSend()}
+            placeholder="Type a message..."
+          />
+          <button onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
+        </div>
       </div>
     </div>
   );
-}
-
-export default Modal;
-
-
-
-
-import React, { useState } from "react";
-import { UploadedDoc } from "./UploadedDoc";
-import { Chat } from "./Chat";
-import { Insights } from "./Insights";
-import Modal from "./Modal";
-
-const getLocalityFromPostcode = async (postcode) => {
-  // Mock response - replace this with an actual API call
-  const postcodeToLocalityMap = {
-    "SW1A 1AA": "Westminster",
-    "E1 6AN": "Shoreditch",
-    "M1 1AE": "Manchester",
-    "E14 0HE": "London Borough of Tower Hamlets",
-  };
-
-  return postcodeToLocalityMap[postcode] || "Unknown locality";
-};
-
-function MainContainer({ advisorType }) {
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const [postcode, setPostcode] = useState("");
-  const [locality, setLocality] = useState("");
-
-  const handleQuestionClick = (question) => {
-    setSelectedQuestion(question);
-  };
-
-  const handleSendQuestionInfo = (questionInfo) => {
-    console.log("Question info sent to Chat:", questionInfo);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handlePostcodeApply = async (postcode) => {
-    const localityName = await getLocalityFromPostcode(postcode);
-    setPostcode(postcode);
-    setLocality(localityName);
-    setIsModalOpen(false);
-  };
-
-  return (
-    <div className="main-container">
-      <h2 className="advisor-heading">
-        {advisorType} Advisor {locality && `(${locality})`}
-      </h2>
-      <UploadedDoc />
-      <Chat onQuestionClick={handleQuestionClick} />
-      <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} onPostcodeApply={handlePostcodeApply}>
-        {/* You can pass additional children here if needed */}
-      </Modal>
-    </div>
-  );
-}
-
-export default MainContainer;
+}chat-messages show if chat are start this
