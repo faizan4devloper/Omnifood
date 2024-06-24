@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import Select from "react-select";
-
 import "./Modal.css";
 
-function Modal({ isOpen, onClose, children }) {
-
-
-const [localities] = useState([
+function Modal({ isOpen, onClose, onLocalitySelect, children }) {
+  const [localities] = useState([
     { value: "England", label: "England" },
     { value: "Los Angeles", label: "Los Angeles" },
     { value: "Chicago", label: "Chicago" },
@@ -18,26 +15,26 @@ const [localities] = useState([
   
   const handleLocalityChange = (selectedOption) => {
     setSelectedLocality(selectedOption);
+    onLocalitySelect(selectedOption);
   };
   
   if (!isOpen) return null;
 
-
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-          <div className="locality-section">
-        <h4>Choose Your Locality</h4>
-        <Select
-          className="dropdown"
-          value={selectedLocality}
-          onChange={handleLocalityChange}
-          options={localities}
-          placeholder="Select a locality"
-          isClearable
-        />
-        {selectedLocality && <div className="selected-message">You selected: {selectedLocality.label}</div>}
-      </div>
+        <div className="locality-section">
+          <h4>Choose Your Locality</h4>
+          <Select
+            className="dropdown"
+            value={selectedLocality}
+            onChange={handleLocalityChange}
+            options={localities}
+            placeholder="Select a locality"
+            isClearable
+          />
+          {selectedLocality && <div className="selected-message">You selected: {selectedLocality.label}</div>}
+        </div>
         <button className="modal-close" onClick={onClose}>
           &times;
         </button>
@@ -52,15 +49,20 @@ export default Modal;
 
 
 
-import React, { useState, useEffect } from "react";
+
+
+
+
+import React, { useState } from "react";
 import { UploadedDoc } from "./UploadedDoc";
 import { Chat } from "./Chat";
 import { Insights } from "./Insights";
 import Modal from "./Modal";
 
-function MainContainer({advisorType, selectedLocality}) {
+function MainContainer({ advisorType }) {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [selectedLocality, setSelectedLocality] = useState(null);
 
   const handleQuestionClick = (question) => {
     setSelectedQuestion(question);
@@ -74,19 +76,24 @@ function MainContainer({advisorType, selectedLocality}) {
     setIsModalOpen(false);
   };
 
+  const handleLocalitySelect = (locality) => {
+    setSelectedLocality(locality);
+  };
+
   return (
     <div className="main-container">
-      <h2 className="advisor-heading">{advisorType} Advisor {selectedLocality}</h2>
+      <h2 className="advisor-heading">
+        {advisorType} Advisor {selectedLocality ? `(${selectedLocality.label})` : ''}
+      </h2>
       <UploadedDoc />
       <Chat onQuestionClick={handleQuestionClick} />
       <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
       
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} onLocalitySelect={handleLocalitySelect}>
+        {/* You can pass additional children here if needed */}
       </Modal>
     </div>
   );
 }
 
 export default MainContainer;
-
