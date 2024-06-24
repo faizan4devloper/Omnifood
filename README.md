@@ -1,10 +1,97 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+
+import "./Chat.css";
+
+export function Chat() {
+    const [messages, setMessages] = useState([]);
+    const [userInput, setUserInput] = useState("");
+    const [mostAskedQuestions] = useState([
+        "School Transfers",
+        "School Placemnets",
+        "Teaching Methodology",
+        "SEN/Disability",
+        "Enrichment & Extract Curr.",
+        "Transportation"
+    ]);
+    const [showQuestions, setShowQuestions] = useState(false);
+
+    const handleSend = () => {
+        if (userInput.trim()) {
+            const newMessage = { sender: "user", text: userInput };
+            setMessages([...messages, newMessage]);
+            setUserInput("");
+            // Simulate bot response
+            setTimeout(() => {
+                const botMessage = { sender: "bot", text: "This is a bot response." };
+                setMessages(prevMessages => [...prevMessages, botMessage]);
+            }, 1000);
+        }
+    };
+
+    const handleQuestionClick = (question) => {
+        setUserInput(question);
+        handleSend();
+        setShowQuestions(false);
+    };
+
+    const toggleQuestions = () => {
+        setShowQuestions(!showQuestions);
+    };
+
+    return (
+        <div className="chat-container">
+            <div className="hamburger-menu" onClick={toggleQuestions}>
+                <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
+            </div>
+            <div className={`most-asked-questions ${showQuestions ? 'show' : ''}`}>
+                <h4>Most Asked Questions</h4>
+                <ul>
+                    {mostAskedQuestions.map((question, index) => (
+                        <li key={index} onClick={() => handleQuestionClick(question)}>
+                            {question}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="chat-content">
+                <h3>Live Conversation</h3>
+                <div className="chat-messages">
+                    {messages.map((message, index) => (
+                        <div key={index} className={`chat-message ${message.sender}`}>
+                            {message.text}
+                        </div>
+                    ))}
+                </div>
+                <div className="chat-input">
+                    <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                        placeholder="Type a message..."
+                    />
+                    <button onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+
+
+
+
+
+import React, { useState } from "react";
 import Select from "react-select";
 import "./Insights.css";
 
 export function Insights() {
     const [localities] = useState([
-        { value: "New York", label: "New York" },
+        { value: "England", label: "England" },
         { value: "Los Angeles", label: "Los Angeles" },
         { value: "Chicago", label: "Chicago" },
         { value: "Houston", label: "Houston" },
@@ -33,81 +120,4 @@ export function Insights() {
             </div>
         </div>
     );
-}
-
-
-
-
-.insights-container {
-    background-color: rgba(0, 0, 0, 0.5);
-    margin: 80px 0 0 10px;
-    border-radius: 10px;
-    width: 400px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out;
-}
-
-.insights-container:hover {
-    transform: scale(1.02);
-}
-
-.insights-container h3 {
-    text-align: center;
-    color: #fff;
-}
-
-.locality-section {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.locality-section h4 {
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-.dropdown {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.selected-message {
-    margin-top: 15px;
-    color: #fff;
-    font-size: 1.2em;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Custom styles for react-select */
-.react-select__control {
-    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    box-shadow: none;
-}
-
-.react-select__menu {
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.react-select__option--is-focused {
-    background-color: #f1f1f1;
-}
-
-.react-select__option--is-selected {
-    background-color: #1f77f6;
-    color: white;
 }
