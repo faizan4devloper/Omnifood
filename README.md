@@ -178,3 +178,105 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import { UploadedDoc } from "./UploadedDoc";
+import { Chat } from "./Chat";
+import { Insights } from "./Insights";
+
+function MainContainer() {
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+
+  const handleQuestionClick = (question) => {
+    setSelectedQuestion(question);
+  };
+
+  const handleSendQuestionInfo = (questionInfo) => {
+    // Implement the logic to send question info to the Chat component
+    // For now, you can log it to the console
+    console.log("Question info sent to Chat:", questionInfo);
+  };
+
+  return (
+    <div className="main-container">
+      <h2 className="advisor-heading">Advisor</h2>
+      <UploadedDoc />
+      <Chat onQuestionClick={handleQuestionClick} />
+      <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
+    </div>
+  );
+}
+
+export default MainContainer;
+
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import { Login } from "./components/Login";
+import { Landing } from "./components/Landing";
+import MainContainer from "./components/MainContainer";
+import "./App.css";
+
+function App() {
+  const [view, setView] = useState("login"); // 'login', 'landing', 'main'
+  const [advisorType, setAdvisorType] = useState("");
+
+  const handleLogin = () => {
+    setView("landing");
+  };
+
+  const handleEnterMain = (type) => {
+    setAdvisorType(type);
+    setView("main");
+  };
+
+  const handleGoBack = () => {
+    if (view === "landing") {
+      setView("login");
+    } else if (view === "main") {
+      setView("landing");
+    }
+  };
+
+  return (
+    <div className="app">
+      <nav className="breadcrumbs">
+        <ul>
+          <li>
+            <a href="#" onClick={handleGoBack}>
+              Login
+            </a>
+          </li>
+          {view === "main" && (
+            <>
+              <li>
+                <a href="#">{advisorType} Advisor</a>
+              </li>
+            </>
+          )}
+          {view === "landing" && (
+            <li>
+              <a>Landing</a>
+            </li>
+          )}
+        </ul>
+      </nav>
+      {view === "login" && <Login onLogin={handleLogin} />}
+      {view === "landing" && <Landing onEnterMain={handleEnterMain} />}
+      {view === "main" && <MainContainer />}
+    </div>
+  );
+}
+
+export default App;
