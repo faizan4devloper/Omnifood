@@ -560,3 +560,139 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import './App.css';
+import { UploadedDoc } from "./components/UploadedDoc";
+import { Chat } from "./components/Chat";
+import { Insights } from "./components/Insights";
+import { Login } from "./components/Login";
+import { Landing } from "./components/Landing";
+
+function App() {
+  const [view, setView] = useState('login'); // 'login', 'landing', 'main'
+  const [advisorType, setAdvisorType] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState();
+
+  const handleLogin = () => {
+    setView('landing');
+  };
+
+  const handleEnterMain = (type) => {
+    setAdvisorType(type);
+    setView('main');
+  };
+
+  const handleGoBack = () => {
+    if (view === 'landing') {
+      setView('login');
+    } else if (view === 'main') {
+      setView('landing');
+    }
+  };
+
+  const handleSendQuestionInfo = (questionInfo) => {
+    // Logic to send question info to Chat component
+    // For now, just log it
+    console.log("Question info sent to Chat:", questionInfo);
+    // Optionally, you can set selectedQuestion here if needed
+  };
+
+  return (
+    <div className="app">
+      <nav className="breadcrumbs">
+        <ul>
+          <li>
+            <a href="#" onClick={handleGoBack}>
+              Login
+            </a>
+          </li>
+          {view === 'main' && (
+            <>
+              <li>
+                <a href="#">
+                  {advisorType} Advisor
+                </a>
+              </li>
+            </>
+          )}
+          {view === 'landing' && (
+            <li>
+              <a>Landing</a>
+            </li>
+          )}
+        </ul>
+      </nav>
+      {view === 'login' && <Login onLogin={handleLogin} />}
+      {view === 'landing' && <Landing onEnterMain={handleEnterMain} />}
+      {view === 'main' && (
+        <div className="main-container">
+          <h2 className="advisor-heading">{advisorType} Advisor</h2>
+          <UploadedDoc />
+          <Chat onQuestionClick={setSelectedQuestion} />
+          <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+
+import React, { useState, useEffect } from "react";
+import "./Insights.css";
+
+export function Insights({ selectedQuestion, onSendQuestionInfo }) {
+  const [questionInfo, setQuestionInfo] = useState(null);
+
+  // Simulated data for question info
+  const questionData = {
+    "School Transfers": "Information about School Transfers...",
+    "School Placements": "How to appeal a school placement decision.",
+    "Teaching Methodology": "Information about Teaching Methodology...",
+    "SEN/Disability": "Information about SEN/Disability...",
+    "Enrichment & Extra Curr.": "Information about Enrichment & Extra Curricular...",
+    "Transportation": "Information about Transportation..."
+  };
+
+  const handleSendToChat = () => {
+    if (questionInfo && onSendQuestionInfo) {
+      onSendQuestionInfo(questionInfo);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedQuestion) {
+      setQuestionInfo(questionData[selectedQuestion]);
+    } else {
+      setQuestionInfo(null);
+    }
+  }, [selectedQuestion]);
+
+  return (
+    <div className="insights-container">
+      <h3>Insights</h3>
+      {questionInfo ? (
+        <div className="question-info">
+          <h4>{selectedQuestion}</h4>
+          <p>{questionInfo}</p>
+          <button onClick={handleSendToChat}>Send to Chat</button>
+        </div>
+      ) : (
+        <p>No question selected</p>
+      )}
+    </div>
+  );
+}
+
+
