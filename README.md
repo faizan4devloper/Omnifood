@@ -64,13 +64,15 @@ export function Chat({ onQuestionClick, questionInfo }) {
       </div>
       <div className="chat-content">
         <h3>Live Conversation</h3>
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <div key={index} className={`chat-message ${message.sender}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
+        {messages.length > 0 && (
+          <div className="chat-messages">
+            {messages.map((message, index) => (
+              <div key={index} className={`chat-message ${message.sender}`}>
+                {message.text}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="chat-input">
           <input
             type="text"
@@ -84,4 +86,4 @@ export function Chat({ onQuestionClick, questionInfo }) {
       </div>
     </div>
   );
-}chat-messages show if chat are start this
+}
