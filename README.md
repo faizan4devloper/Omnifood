@@ -5,8 +5,8 @@ export function Insights() {
     const [localities] = useState(["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]);
     const [selectedLocality, setSelectedLocality] = useState("");
 
-    const handleLocalityClick = (locality) => {
-        setSelectedLocality(locality);
+    const handleLocalityChange = (event) => {
+        setSelectedLocality(event.target.value);
     };
 
     return (
@@ -14,23 +14,23 @@ export function Insights() {
             <h3>Insights</h3>
             <div className="locality-section">
                 <h4>Choose Your Locality</h4>
-                <div className="localities">
+                <select 
+                    className="locality-dropdown" 
+                    value={selectedLocality} 
+                    onChange={handleLocalityChange}
+                >
+                    <option value="" disabled>Select a locality</option>
                     {localities.map((locality, index) => (
-                        <div
-                            key={index}
-                            className={`locality ${selectedLocality === locality ? 'selected' : ''}`}
-                            onClick={() => handleLocalityClick(locality)}
-                        >
+                        <option key={index} value={locality}>
                             {locality}
-                        </div>
+                        </option>
                     ))}
-                </div>
+                </select>
                 {selectedLocality && <div className="selected-message">You selected: {selectedLocality}</div>}
             </div>
         </div>
     );
 }
-
 
 
 
@@ -68,31 +68,18 @@ export function Insights() {
     margin-bottom: 10px;
 }
 
-.localities {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.locality {
-    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
-    color: white;
-    padding: 10px 20px;
-    margin: 5px;
+.locality-dropdown {
+    width: 80%;
+    padding: 10px;
     border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.locality:hover {
-    background: linear-gradient(90deg, #1f77f6 0%, #6f36cd 100%);
-    transform: scale(1.05);
-}
-
-.locality.selected {
-    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
-    border: 2px solid #fff;
+.locality-dropdown:hover {
+    background-color: #f1f1f1;
 }
 
 .selected-message {
