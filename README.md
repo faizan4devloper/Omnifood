@@ -47,17 +47,29 @@ export default Modal;
 
 
 
-
 import React, { useState } from "react";
 import { UploadedDoc } from "./UploadedDoc";
 import { Chat } from "./Chat";
 import { Insights } from "./Insights";
 import Modal from "./Modal";
 
+const getLocalityFromPostcode = async (postcode) => {
+  // Mock response - replace this with an actual API call
+  const postcodeToLocalityMap = {
+    "SW1A 1AA": "Westminster",
+    "E1 6AN": "Shoreditch",
+    "M1 1AE": "Manchester",
+    // Add more mappings as required
+  };
+  
+  return postcodeToLocalityMap[postcode] || "Unknown locality";
+};
+
 function MainContainer({ advisorType }) {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [postcode, setPostcode] = useState("");
+  const [locality, setLocality] = useState("");
 
   const handleQuestionClick = (question) => {
     setSelectedQuestion(question);
@@ -71,8 +83,10 @@ function MainContainer({ advisorType }) {
     setIsModalOpen(false);
   };
 
-  const handlePostcodeApply = (postcode) => {
+  const handlePostcodeApply = async (postcode) => {
     setPostcode(postcode);
+    const localityName = await getLocalityFromPostcode(postcode);
+    setLocality(localityName);
     setIsModalOpen(false);
   };
 
@@ -81,6 +95,7 @@ function MainContainer({ advisorType }) {
       <h2 className="advisor-heading">
         {advisorType} Advisor {postcode ? `(${postcode})` : ''}
       </h2>
+      {locality && <p className="locality-name">{locality}</p>}
       <UploadedDoc />
       <Chat onQuestionClick={handleQuestionClick} />
       <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
