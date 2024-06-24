@@ -1,44 +1,3 @@
-import React, { useState } from "react";
-import "./Insights.css";
-
-export function Insights() {
-    const [localities] = useState(["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]);
-    const [selectedLocality, setSelectedLocality] = useState("");
-
-    const handleLocalityChange = (event) => {
-        setSelectedLocality(event.target.value);
-    };
-
-    return (
-        <div className="insights-container">
-            <h3>Insights</h3>
-            <div className="locality-section">
-                <h4>Choose Your Locality</h4>
-                <select 
-                    className="locality-dropdown" 
-                    value={selectedLocality} 
-                    onChange={handleLocalityChange}
-                >
-                    <option value="" disabled>Select a locality</option>
-                    {localities.map((locality, index) => (
-                        <option key={index} value={locality}>
-                            {locality}
-                        </option>
-                    ))}
-                </select>
-                {selectedLocality && <div className="selected-message">You selected: {selectedLocality}</div>}
-            </div>
-        </div>
-    );
-}
-
-
-
-
-
-
-
-
 .insights-container {
     background-color: rgba(0, 0, 0, 0.5);
     margin: 80px 0 0 10px;
@@ -61,11 +20,18 @@ export function Insights() {
 .locality-section {
     margin-top: 20px;
     text-align: center;
+    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .locality-section h4 {
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .locality-dropdown {
@@ -75,11 +41,16 @@ export function Insights() {
     border: 1px solid #ccc;
     font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: #fff;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .locality-dropdown:hover {
     background-color: #f1f1f1;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .selected-message {
