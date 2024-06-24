@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-
 import "./Chat.css";
 
-export function Chat() {
+export function Chat({ onQuestionClick }) {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState("");
     const [mostAskedQuestions] = useState([
         "School Transfers",
-        "School Placemnets",
+        "School Placements",
         "Teaching Methodology",
         "SEN/Disability",
-        "Enrichment & Extract Curr.",
+        "Enrichment & Extra Curr.",
         "Transportation"
     ]);
     const [showQuestions, setShowQuestions] = useState(false);
@@ -34,6 +33,7 @@ export function Chat() {
         setUserInput(question);
         handleSend();
         setShowQuestions(false);
+        onQuestionClick(question);
     };
 
     const toggleQuestions = () => {
@@ -85,11 +85,14 @@ export function Chat() {
 
 
 
+
+
+
 import React, { useState } from "react";
 import Select from "react-select";
 import "./Insights.css";
 
-export function Insights() {
+export function Insights({ selectedQuestion }) {
     const [localities] = useState([
         { value: "England", label: "England" },
         { value: "Los Angeles", label: "Los Angeles" },
@@ -118,6 +121,12 @@ export function Insights() {
                 />
                 {selectedLocality && <div className="selected-message">You selected: {selectedLocality.label}</div>}
             </div>
+            {selectedQuestion && (
+                <div className="selected-question">
+                    <h4>Information about:</h4>
+                    <p>{selectedQuestion}</p>
+                </div>
+            )}
         </div>
     );
 }
