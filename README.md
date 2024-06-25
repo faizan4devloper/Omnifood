@@ -15,68 +15,59 @@ export function Chat({ onQuestionClick }) {
 
     const questionDescriptions = {
         "School Transfers": [
-           "Can you help me with Local Authority school in this region along with Parent rating?",
-"What are the admission criteria for the schools in this area? How do they prioritize applications?",
-"What are the average class sizes and student-teacher ratios in the local schools?",
-"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+            "Description 1 for School Transfers",
+            "Description 2 for School Transfers",
+            "Description 3 for School Transfers",
+            "Description 4 for School Transfers",
+            "Description 5 for School Transfers"
         ],
         "School Placements": [
-           "Can you help me with Local Authority school in this region along with Parent rating?",
-"What are the admission criteria for the schools in this area? How do they prioritize applications?",
-"What are the average class sizes and student-teacher ratios in the local schools?",
-"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+            "Description 1 for School Placements",
+            "Description 2 for School Placements",
+            "Description 3 for School Placements",
+            "Description 4 for School Placements",
+            "Description 5 for School Placements"
         ],
         "Teaching Methodology": [
-            "Can you help me with Local Authority school in this region along with Parent rating?",
-"What are the admission criteria for the schools in this area? How do they prioritize applications?",
-"What are the average class sizes and student-teacher ratios in the local schools?",
-"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+            "Description 1 for Teaching Methodology",
+            "Description 2 for Teaching Methodology",
+            "Description 3 for Teaching Methodology",
+            "Description 4 for Teaching Methodology",
+            "Description 5 for Teaching Methodology"
         ],
         "SEN/Disability": [
-           "Can you help me with Local Authority school in this region along with Parent rating?",
-"What are the admission criteria for the schools in this area? How do they prioritize applications?",
-"What are the average class sizes and student-teacher ratios in the local schools?",
-"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+            "Description 1 for SEN/Disability",
+            "Description 2 for SEN/Disability",
+            "Description 3 for SEN/Disability",
+            "Description 4 for SEN/Disability",
+            "Description 5 for SEN/Disability"
         ],
         "Enrichment & Extra Curr.": [
-            "Can you help me with Local Authority school in this region along with Parent rating?",
-"What are the admission criteria for the schools in this area? How do they prioritize applications?",
-"What are the average class sizes and student-teacher ratios in the local schools?",
-"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+            "Description 1 for Enrichment & Extra Curr.",
+            "Description 2 for Enrichment & Extra Curr.",
+            "Description 3 for Enrichment & Extra Curr.",
+            "Description 4 for Enrichment & Extra Curr.",
+            "Description 5 for Enrichment & Extra Curr."
         ],
         "Transportation": [
-            "Can you help me with Local Authority school in this region along with Parent rating?",
-"What are the admission criteria for the schools in this area? How do they prioritize applications?",
-"What are the average class sizes and student-teacher ratios in the local schools?",
-"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+            "Description 1 for Transportation",
+            "Description 2 for Transportation",
+            "Description 3 for Transportation",
+            "Description 4 for Transportation",
+            "Description 5 for Transportation"
         ]
     };
 
     const schoolNames = ["Cayley", "Mayflower", "Virginia"];
 
     const [showQuestions, setShowQuestions] = useState(false);
-    const [selectedQuestions, setSelectedQuestions] = useState([]);
-    const [expandedQuestions, setExpandedQuestions] = useState({});
-    const [expandedDescriptions, setExpandedDescriptions] = useState({});
-    
-const [expandedDescription, setExpandedDescription] = useState(null);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [expandedDescription, setExpandedDescription] = useState(null);
 
-const toggleDescription = (descIndex) => {
-  if (expandedDescription === descIndex) {
-    setExpandedDescription(null); 
-  } else {
-    setExpandedDescription(descIndex);
-  }
-}
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
-        setSelectedQuestions([question, ...selectedQuestions]);
+        setSelectedQuestion(question);
+        setExpandedDescription(null);
         onQuestionClick(question);
     };
 
@@ -84,18 +75,8 @@ const toggleDescription = (descIndex) => {
         setShowQuestions(!showQuestions);
     };
 
-    const toggleExpand = (question) => {
-        setExpandedQuestions((prevExpanded) => ({
-            ...prevExpanded,
-            [question]: !prevExpanded[question],
-        }));
-    };
-
-    const toggleExpandDescription = (question, index) => {
-        setExpandedDescriptions((prevExpanded) => ({
-            ...prevExpanded,
-            [`${question}-${index}`]: !prevExpanded[`${question}-${index}`],
-        }));
+    const toggleExpandDescription = (index) => {
+        setExpandedDescription(expandedDescription === index ? null : index);
     };
 
     return (
@@ -115,46 +96,48 @@ const toggleDescription = (descIndex) => {
                 </ul>
             </div>
             <div className="selected-questions">
-                {selectedQuestions.map((question, index) => (
-                    <div
-                        key={index}
-                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`}
-                        onClick={() => toggleExpand(question)}
-                        aria-expanded={expandedQuestions[question]}
-                    >
+                {selectedQuestion && (
+                    <div className="selected-question">
                         <div className="question-header">
-                            <h4>{question}</h4>
+                            <h4>{selectedQuestion}</h4>
                             <FontAwesomeIcon
-                                icon={expandedQuestions[question] ? faChevronUp : faChevronDown}
+                                icon={expandedDescription !== null ? faChevronUp : faChevronDown}
                                 className="toggle-icon"
+                                onClick={() => toggleExpandDescription(expandedDescription)}
                             />
                         </div>
-                        {expandedQuestions[question] && (
-                            <div className="descriptions">
-                                {questionDescriptions[question].map((desc, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`description ${expandedDescriptions[`${question}-${idx}`] ? 'expanded' : ''}`}
-                                        onClick={() => toggleExpandDescription(question, idx)}
-                                    >
-                                        <p>{desc}</p>
-                                        {expandedDescriptions[`${question}-${idx}`] && (
-                                            <ul>
-                                                {schoolNames.map((school, schoolIdx) => (
-                                                    <li key={schoolIdx}>{school}</li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        <div className="descriptions">
+                            {questionDescriptions[selectedQuestion].map((desc, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`description ${expandedDescription === idx ? 'expanded' : ''}`}
+                                    onClick={() => toggleExpandDescription(idx)}
+                                >
+                                    <p>{desc}</p>
+                                    {expandedDescription === idx && (
+                                        <ul>
+                                            {schoolNames.map((school, schoolIdx) => (
+                                                <li key={schoolIdx}>{school}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -170,6 +153,7 @@ const toggleDescription = (descIndex) => {
     position: relative;
     overflow: hidden;
 }
+
 .chat-container h1 {
     text-align: left;
     margin-left: 42px;
@@ -177,6 +161,7 @@ const toggleDescription = (descIndex) => {
     font-size: 22px;
     color: #fff;
 }
+
 .hamburger-menu {
     position: absolute;
     top: 10px;
@@ -302,20 +287,16 @@ const toggleDescription = (descIndex) => {
     display: block;
     transition: 0.1s ease-in;
 }
-.selected-question.expanded p:hover{
-    color: #000;
-}
+
 .description {
-    /*background-color: #f5f5f5;*/
     padding: 8px;
     border-radius: 4px;
-    /*margin: 8px 0;*/
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .description:hover {
-    /*background-color: #ddd;*/
+    background-color: #ddd;
 }
 
 .description.expanded ul {
