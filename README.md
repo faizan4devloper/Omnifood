@@ -62,9 +62,9 @@ export function ChatScreen() {
 
 
 
-
 .chat-screen {
   position: relative;
+  font-family: 'Arial', sans-serif;
 }
 
 .hamburger-menu {
@@ -74,7 +74,11 @@ export function ChatScreen() {
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 1000;
-  color: #fff;
+  transition: transform 0.3s;
+}
+
+.hamburger-menu:hover {
+  transform: scale(1.1);
 }
 
 .chat-content {
@@ -85,31 +89,32 @@ export function ChatScreen() {
   height: 100%;
   background-color: #fff;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-  transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  transition: left 0.5s ease-in-out, box-shadow 0.5s;
   z-index: 999;
-  display: flex;
-  flex-direction: column;
-  padding-top: 50px; /* Adjust based on header height */
 }
 
 .chat-content.open {
   left: 0;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .chat-messages {
   padding: 20px;
   overflow-y: auto;
-  flex-grow: 1;
-  background: #f9f9f9;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  height: calc(100% - 80px); /* Adjust height based on other content */
+  background-color: #f9f9f9;
 }
 
 .chat-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   padding: 10px;
-  background: #fff;
-  border-top: 1px solid #eee;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
 }
 
 .chat-input input {
@@ -118,21 +123,20 @@ export function ChatScreen() {
   border: 1px solid #ccc;
   border-radius: 20px;
   outline: none;
-  transition: border-color 0.3s;
+  transition: box-shadow 0.3s;
 }
 
 .chat-input input:focus {
-  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
 }
 
 .chat-input button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-left: 10px;
   color: #007bff;
-  outline: none;
   transition: color 0.3s;
 }
 
@@ -146,22 +150,28 @@ export function ChatScreen() {
   border-radius: 10px;
   max-width: 80%;
   word-wrap: break-word;
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .chat-message.user {
-  background-color: #e0f7fa;
+  background-color: #d1e7ff;
   align-self: flex-end;
-  border-bottom-right-radius: 0;
+  margin-left: auto;
 }
 
 .chat-message.bot {
-  background-color: #f1f1f1;
+  background-color: #e9ecef;
   align-self: flex-start;
-  border-bottom-left-radius: 0;
+  margin-right: auto;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
