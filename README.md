@@ -383,3 +383,17 @@ const toggleExpandDescription = (question, index) => {
     // Update the state with the new expanded descriptions
     setExpandedDescriptions(newExpandedDescriptions);
 };
+
+
+
+
+const toggleExpandDescription = (question, index) => {
+    // Create a new object to track the expanded state of descriptions
+    const newExpandedDescriptions = {};
+
+    // Toggle the clicked description
+    newExpandedDescriptions[`${question}-${index}`] = !expandedDescriptions[`${question}-${index}`];
+
+    // Update the state with the new expanded descriptions
+    setExpandedDescriptions(newExpandedDescriptions);
+};
