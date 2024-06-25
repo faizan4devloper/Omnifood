@@ -472,3 +472,96 @@ export function Chat({ onQuestionClick }) {
         </div>
     );
 }
+
+
+
+
+.selected-questions::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(111, 54, 205, 1);
+}
+
+.selected-questions::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.selected-question {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.selected-question h4 {
+    margin: 0;
+}
+
+.selected-question .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selected-question .toggle-icon {
+    font-size: 18px;
+}
+
+.selected-question .descriptions {
+    margin-top: 10px;
+}
+
+.selected-question p {
+    margin: 10px 0 0;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.selected-question.expanded p {
+    display: block;
+}
+
+.description {
+    padding: 8px;
+    border-radius: 4px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.description:hover {
+    background-color: #f5f5f5;
+}
+
+.description.expanded ul {
+    display: block;
+}
+
+.description ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.description ul li {
+    background-color: #e0e0e0;
+    padding: 5px;
+    color: #000;
+    border-radius: 4px;
+    margin: 5px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
