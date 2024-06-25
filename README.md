@@ -14,17 +14,56 @@ export function Chat({ onQuestionClick }) {
     ];
 
     const questionDescriptions = {
-        "School Transfers": "Description for School Transfers...",
-        "School Placements": "Description for School Placements...",
-        "Teaching Methodology": "Description for Teaching Methodology...",
-        "SEN/Disability": "Description for SEN/Disability...",
-        "Enrichment & Extra Curr.": "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?",
-        "Transportation": "Description for Transportation..."
+        "School Transfers": [
+            "Description 1 for School Transfers...",
+            "Description 2 for School Transfers...",
+            "Description 3 for School Transfers...",
+            "Description 4 for School Transfers...",
+            "Description 5 for School Transfers..."
+        ],
+        "School Placements": [
+            "Description 1 for School Placements...",
+            "Description 2 for School Placements...",
+            "Description 3 for School Placements...",
+            "Description 4 for School Placements...",
+            "Description 5 for School Placements..."
+        ],
+        "Teaching Methodology": [
+            "Description 1 for Teaching Methodology...",
+            "Description 2 for Teaching Methodology...",
+            "Description 3 for Teaching Methodology...",
+            "Description 4 for Teaching Methodology...",
+            "Description 5 for Teaching Methodology..."
+        ],
+        "SEN/Disability": [
+            "Description 1 for SEN/Disability...",
+            "Description 2 for SEN/Disability...",
+            "Description 3 for SEN/Disability...",
+            "Description 4 for SEN/Disability...",
+            "Description 5 for SEN/Disability..."
+        ],
+        "Enrichment & Extra Curr.": [
+            "Description 1 for Enrichment & Extra Curricular...",
+            "Description 2 for Enrichment & Extra Curricular...",
+            "Description 3 for Enrichment & Extra Curricular...",
+            "Description 4 for Enrichment & Extra Curricular...",
+            "Description 5 for Enrichment & Extra Curricular..."
+        ],
+        "Transportation": [
+            "Description 1 for Transportation...",
+            "Description 2 for Transportation...",
+            "Description 3 for Transportation...",
+            "Description 4 for Transportation...",
+            "Description 5 for Transportation..."
+        ]
     };
+
+    const schoolNames = ["School 1", "School 2", "School 3"];
 
     const [showQuestions, setShowQuestions] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [expandedQuestions, setExpandedQuestions] = useState({});
+    const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
@@ -43,9 +82,16 @@ export function Chat({ onQuestionClick }) {
         }));
     };
 
+    const toggleExpandDescription = (question, index) => {
+        setExpandedDescriptions((prevExpanded) => ({
+            ...prevExpanded,
+            [`${question}-${index}`]: !prevExpanded[`${question}-${index}`],
+        }));
+    };
+
     return (
         <div className="chat-container">
-            <h1>Most Question</h1>
+            <h1>Most Asked Questions</h1>
             <div className="hamburger-menu" onClick={toggleQuestions}>
                 <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
             </div>
@@ -61,21 +107,38 @@ export function Chat({ onQuestionClick }) {
             </div>
             <div className="selected-questions">
                 {selectedQuestions.map((question, index) => (
-                    <div 
-                        key={index} 
-                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`} 
+                    <div
+                        key={index}
+                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`}
                         onClick={() => toggleExpand(question)}
                         aria-expanded={expandedQuestions[question]}
                     >
                         <div className="question-header">
                             <h4>{question}</h4>
-                            <FontAwesomeIcon 
-                                icon={expandedQuestions[question] ? faChevronUp : faChevronDown} 
-                                className="toggle-icon" 
+                            <FontAwesomeIcon
+                                icon={expandedQuestions[question] ? faChevronUp : faChevronDown}
+                                className="toggle-icon"
                             />
                         </div>
                         {expandedQuestions[question] && (
-                            <p>{questionDescriptions[question]}</p>
+                            <div className="descriptions">
+                                {questionDescriptions[question].map((desc, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`description ${expandedDescriptions[`${question}-${idx}`] ? 'expanded' : ''}`}
+                                        onClick={() => toggleExpandDescription(question, idx)}
+                                    >
+                                        <p>{desc}</p>
+                                        {expandedDescriptions[`${question}-${idx}`] && (
+                                            <ul>
+                                                {schoolNames.map((school, schoolIdx) => (
+                                                    <li key={schoolIdx}>{school}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
                         )}
                     </div>
                 ))}
@@ -83,6 +146,8 @@ export function Chat({ onQuestionClick }) {
         </div>
     );
 }
+
+
 
 
 
@@ -98,9 +163,8 @@ export function Chat({ onQuestionClick }) {
     position: relative;
     overflow: hidden;
 }
-.chat-container h1{
+.chat-container h1 {
     text-align: left;
-    /*margin: 0;*/
     margin-left: 42px;
     margin-top: 12px;
     font-size: 22px;
@@ -218,7 +282,6 @@ export function Chat({ onQuestionClick }) {
 
 .selected-question .toggle-icon {
     font-size: 18px;
-    color: #fff;
 }
 
 .selected-question p {
@@ -228,8 +291,40 @@ export function Chat({ onQuestionClick }) {
 }
 
 .selected-question.expanded p {
-    color: #ccc;
     display: block;
+}
+
+.description {
+    background-color: #f5f5f5;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.description:hover {
+    background-color: #ddd;
+}
+
+.description.expanded ul {
+    display: block;
+}
+
+.description ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.description ul li {
+    background-color: #e0e0e0;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 5px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes fadeIn {
