@@ -15,46 +15,46 @@ export function Chat({ onQuestionClick }) {
 
     const questionDescriptions = {
         "School Transfers": [
-            "Can you help me with Local Authority school in this region along with Parent rating?",
-            "What are the admission criteria for the schools in this area? How do they prioritize applications?",
-            "What are the average class sizes and student-teacher ratios in the local schools?",
-            "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-            "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+           "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
         ],
         "School Placements": [
-            "Can you help me with Local Authority school in this region along with Parent rating?",
-            "What are the admission criteria for the schools in this area? How do they prioritize applications?",
-            "What are the average class sizes and student-teacher ratios in the local schools?",
-            "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-            "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+           "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
         ],
         "Teaching Methodology": [
             "Can you help me with Local Authority school in this region along with Parent rating?",
-            "What are the admission criteria for the schools in this area? How do they prioritize applications?",
-            "What are the average class sizes and student-teacher ratios in the local schools?",
-            "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-            "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
         ],
         "SEN/Disability": [
-            "Can you help me with Local Authority school in this region along with Parent rating?",
-            "What are the admission criteria for the schools in this area? How do they prioritize applications?",
-            "What are the average class sizes and student-teacher ratios in the local schools?",
-            "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-            "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+           "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
         ],
         "Enrichment & Extra Curr.": [
             "Can you help me with Local Authority school in this region along with Parent rating?",
-            "What are the admission criteria for the schools in this area? How do they prioritize applications?",
-            "What are the average class sizes and student-teacher ratios in the local schools?",
-            "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-            "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
         ],
         "Transportation": [
             "Can you help me with Local Authority school in this region along with Parent rating?",
-            "What are the admission criteria for the schools in this area? How do they prioritize applications?",
-            "What are the average class sizes and student-teacher ratios in the local schools?",
-            "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
-            "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
         ]
     };
 
@@ -64,7 +64,16 @@ export function Chat({ onQuestionClick }) {
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [expandedQuestions, setExpandedQuestions] = useState({});
     const [expandedDescriptions, setExpandedDescriptions] = useState({});
+    
+const [expandedDescription, setExpandedDescription] = useState(null);
 
+const toggleDescription = (descIndex) => {
+  if (expandedDescription === descIndex) {
+    setExpandedDescription(null); 
+  } else {
+    setExpandedDescription(descIndex);
+  }
+}
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
         setSelectedQuestions([question, ...selectedQuestions]);
@@ -83,9 +92,10 @@ export function Chat({ onQuestionClick }) {
     };
 
     const toggleExpandDescription = (question, index) => {
-        setExpandedDescriptions({
-            [`${question}-${index}`]: !expandedDescriptions[`${question}-${index}`],
-        });
+        setExpandedDescriptions((prevExpanded) => ({
+            ...prevExpanded,
+            [`${question}-${index}`]: !prevExpanded[`${question}-${index}`],
+        }));
     };
 
     return (
@@ -147,14 +157,6 @@ export function Chat({ onQuestionClick }) {
 }
 
 
-
-
-
-
-
-
-
-
 .chat-container {
     background-color: rgba(0, 0, 0, 0.5);
     margin: 80px 0 0 10px;
@@ -166,7 +168,6 @@ export function Chat({ onQuestionClick }) {
     position: relative;
     overflow: hidden;
 }
-
 .chat-container h1 {
     text-align: left;
     margin-left: 42px;
@@ -174,7 +175,6 @@ export function Chat({ onQuestionClick }) {
     font-size: 22px;
     color: #fff;
 }
-
 .hamburger-menu {
     position: absolute;
     top: 10px;
@@ -240,7 +240,7 @@ export function Chat({ onQuestionClick }) {
 }
 
 .selected-questions {
-    margin-top: 80px;
+    margin-top: 30px;
     overflow-y: auto;
     padding: 10px;
     flex-grow: 1;
@@ -289,24 +289,31 @@ export function Chat({ onQuestionClick }) {
     font-size: 18px;
 }
 
-.selected-question.expanded .descriptions {
-    display: block;
-}
-
-.descriptions {
+.selected-question p {
+    margin: 10px 0 0;
     display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
 }
 
+.selected-question.expanded p {
+    font-size: 14px;
+    display: block;
+    transition: 0.1s ease-in;
+}
+.selected-question.expanded p:hover{
+    color: #000;
+}
 .description {
+    /*background-color: #f5f5f5;*/
     padding: 8px;
     border-radius: 4px;
-    margin: 8px 0;
+    /*margin: 8px 0;*/
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .description:hover {
-    background-color: #ddd;
+    /*background-color: #ddd;*/
 }
 
 .description.expanded ul {
