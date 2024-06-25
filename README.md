@@ -1,113 +1,142 @@
-.chat-container {
-    background-color: rgba(0, 0, 0, 0.5);
-    margin: 80px 0 0 10px;
-    border-radius: 10px;
-    width: 450px;
-    display: flex;
-    flex-direction: column;
-    height: 500px;
-    position: relative;
-    overflow: hidden; /* Ensure the animated elements stay within bounds */
+import React, { useState } from "react";
+import { ChatScreen } from "./ChatScreen";
+import { Chat } from "./Chat";
+import { Insights } from "./Insights";
+import Modal from "./Modal";
+
+const getLocalityFromPostcode = async (postcode) => {
+  // Mock response - replace this with an actual API call
+  const postcodeToLocalityMap = {
+    "SW1A 1AA": "Westminster",
+    "E1 6AN": "Shoreditch",
+    "M1 1AE": "Manchester",
+    "E14 0HE": "London Borough of Tower Hamlets",
+  };
+
+  return postcodeToLocalityMap[postcode] || "Unknown locality";
+};
+
+function MainContainer({ advisorType }) {
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [postcode, setPostcode] = useState("");
+  const [locality, setLocality] = useState("");
+
+  const handleQuestionClick = (question) => {
+    setSelectedQuestion(question);
+  };
+
+  const handleSendQuestionInfo = (questionInfo) => {
+    console.log("Question info sent to Chat:", questionInfo);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handlePostcodeApply = async (postcode) => {
+    const localityName = await getLocalityFromPostcode(postcode);
+    setPostcode(postcode);
+    setLocality(localityName);
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div className="main-container">
+      <h2 className="advisor-heading">
+        {advisorType} Advisor {locality && `- ${locality}`}
+      </h2>
+      <ChatScreen />
+      <Chat onQuestionClick={handleQuestionClick} />
+      <Insights selectedQuestion={selectedQuestion} onSendQuestionInfo={handleSendQuestionInfo} />
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} onPostcodeApply={handlePostcodeApply}>
+        {/* You can pass additional children here if needed */}
+      </Modal>
+    </div>
+  );
 }
 
-.hamburger-menu {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    color: #fff;
-    cursor: pointer;
-    z-index: 10;
+export default MainContainer;
+
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+body,
+html {
+  background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", Arial, sans-serif;
+  scroll-behavior: smooth;
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  
+}
+.main-container {
+  display: flex;
+  justify-content: center;
+  
 }
 
-.most-asked-questions {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
-    display: flex;
-    border-radius: 10px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    color: white;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease-in-out;
+.advisor-heading {
+  position: absolute;
+  right:38%;
+  margin:10px;
+  text-align: center;
+  font-size: 2rem;
+  color: #333; 
 }
 
-.most-asked-questions.show {
-    transform: translateY(0);
+.breadcrumbs {
+  position: absolute;
+  top:-5px;
+  padding: 10px;
 }
 
-.most-asked-questions h4 {
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: fadeIn 0.5s 0.2s forwards;
+.breadcrumbs ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-.most-asked-questions ul {
-    list-style: none;
-    padding: 0;
-    opacity: 0;
-    animation: fadeIn 0.5s 0.4s forwards;
+.breadcrumbs ul li {
+  display: inline;
 }
 
-.most-asked-questions li {
-    padding: 10px 20px;
-    font-size:14px;
-    font-weight:500;
-    margin: 5px 0px;
-    background-color: #fff;
-    color:#000;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+.breadcrumbs ul li:not(:first-child)::before {
+  content: ">";
+  color:#fff;
+  font-size: 20px;
+  margin: 0 5px;
 }
 
-.most-asked-questions li:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    transform: scale(1.05);
+.breadcrumbs ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px;
 }
 
-.selected-questions {
-    margin-top: 80px;
-    overflow-y: auto;
-    padding: 10px;
-    flex-grow: 1;
+.breadcrumbs ul li a:hover {
+  color: #ccc; 
 }
 
-.selected-questions::-webkit-scrollbar {
-    width: 8px;
+.breadcrumbs ul li span {
+  color: #777;
+  padding: 5px;
 }
 
-.selected-questions::-webkit-scrollbar-thumb {
-    background-color: rgba(111, 54, 205, 0.8); /* Scrollbar thumb color */
-    border-radius: 10px;
+.breadcrumbs ul li.active a {
+  color:red;
+  text-decoration: underline;
 }
 
-.selected-questions::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(111, 54, 205, 1); /* Scrollbar thumb color on hover */
-}
-
-.selected-questions::-webkit-scrollbar-track {
-    background-color: rgba(255, 255, 255, 0.1); /* Scrollbar track color */
-    border-radius: 10px;
-}
-
-.selected-question {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
-    color: #000;
-}
-
-.selected-question p {
-    margin: 0;
+.breadcrumbs ul li.active a:hover {
+  color: #1559b3;
 }
