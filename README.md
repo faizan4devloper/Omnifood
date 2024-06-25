@@ -1,3 +1,91 @@
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import "./Chat.css";
+
+export function Chat({ onQuestionClick }) {
+    const mostAskedQuestions = [
+        "School Transfers",
+        "School Placements",
+        "Teaching Methodology",
+        "SEN/Disability",
+        "Enrichment & Extra Curr.",
+        "Transportation"
+    ];
+
+    const questionDescriptions = {
+        "School Transfers": "Description for School Transfers...",
+        "School Placements": "Description for School Placements...",
+        "Teaching Methodology": "Description for Teaching Methodology...",
+        "SEN/Disability": "Description for SEN/Disability...",
+        "Enrichment & Extra Curr.": "Description for Enrichment & Extra Curricular...",
+        "Transportation": "Description for Transportation..."
+    };
+
+    const [showQuestions, setShowQuestions] = useState(false);
+    const [selectedQuestions, setSelectedQuestions] = useState([]);
+    const [expandedQuestions, setExpandedQuestions] = useState({});
+
+    const handleQuestionClick = (question) => {
+        setShowQuestions(false);
+        setSelectedQuestions([question, ...selectedQuestions]);
+        onQuestionClick(question);
+    };
+
+    const toggleQuestions = () => {
+        setShowQuestions(!showQuestions);
+    };
+
+    const toggleExpand = (question) => {
+        setExpandedQuestions((prevExpanded) => ({
+            ...prevExpanded,
+            [question]: !prevExpanded[question],
+        }));
+    };
+
+    return (
+        <div className="chat-container">
+            <div className="hamburger-menu" onClick={toggleQuestions}>
+                <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
+            </div>
+            <div className={`most-asked-questions ${showQuestions ? 'show' : ''}`}>
+                <h4>Most Asked Questions</h4>
+                <ul>
+                    {mostAskedQuestions.map((question, index) => (
+                        <li key={index} onClick={() => handleQuestionClick(question)}>
+                            {question}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="selected-questions">
+                {selectedQuestions.map((question, index) => (
+                    <div 
+                        key={index} 
+                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`} 
+                        onClick={() => toggleExpand(question)}
+                        aria-expanded={expandedQuestions[question]}
+                    >
+                        <div className="question-header">
+                            <h4>{question}</h4>
+                            <FontAwesomeIcon 
+                                icon={expandedQuestions[question] ? faChevronUp : faChevronDown} 
+                                className="toggle-icon" 
+                            />
+                        </div>
+                        {expandedQuestions[question] && (
+                            <p>{questionDescriptions[question]}</p>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+
+
+
 .chat-container {
     background-color: rgba(0, 0, 0, 0.5);
     margin: 80px 0 0 10px;
@@ -112,6 +200,17 @@
 
 .selected-question h4 {
     margin: 0;
+}
+
+.selected-question .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selected-question .toggle-icon {
+    font-size: 18px;
+    color: #000;
 }
 
 .selected-question p {
