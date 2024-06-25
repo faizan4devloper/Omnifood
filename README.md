@@ -14,6 +14,7 @@ export function Chat({ onQuestionClick, questionInfo }) {
     ]);
     const [showQuestions, setShowQuestions] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
+    const [expandedQuestion, setExpandedQuestion] = useState(null);
 
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
@@ -23,6 +24,10 @@ export function Chat({ onQuestionClick, questionInfo }) {
 
     const toggleQuestions = () => {
         setShowQuestions(!showQuestions);
+    };
+
+    const toggleDescription = (question) => {
+        setExpandedQuestion(expandedQuestion === question ? null : question);
     };
 
     return (
@@ -42,17 +47,19 @@ export function Chat({ onQuestionClick, questionInfo }) {
             </div>
             <div className="selected-questions">
                 {selectedQuestions.map((question, index) => (
-                    <div key={index} className="selected-question">
+                    <div key={index} className="selected-question" onClick={() => toggleDescription(question)}>
                         <h4>{question}</h4>
+                        {expandedQuestion === question && (
+                            <div className="question-description">
+                                <p>{questionInfo}</p>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
         </div>
     );
 }
-
-
-
 
 
 
@@ -117,11 +124,11 @@ export function Chat({ onQuestionClick, questionInfo }) {
 
 .most-asked-questions li {
     padding: 10px 20px;
-    font-size:14px;
-    font-weight:500;
+    font-size: 14px;
+    font-weight: 500;
     margin: 5px 0px;
     background-color: #fff;
-    color:#000;
+    color: #000;
     border-radius: 4px;
     cursor: pointer;
     box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
@@ -166,8 +173,38 @@ export function Chat({ onQuestionClick, questionInfo }) {
     margin-bottom: 10px;
     box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
     color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
-.selected-question p {
+.selected-question h4 {
     margin: 0;
+}
+
+.question-description {
+    margin-top: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.selected-question:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.selected-question h4 {
+    margin: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.question-description p {
+    margin: 0;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.question-description.open {
+    max-height: 200px; /* Adjust based on your content length */
 }
