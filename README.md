@@ -1,177 +1,139 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./ChatScreen.css";
-
-export function ChatScreen() {
-  const [messages, setMessages] = useState([]);
-  const [userInput, setUserInput] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const handleSend = () => {
-    if (userInput.trim()) {
-      const newMessage = { sender: "user", text: userInput };
-      setMessages([...messages, newMessage]);
-      setUserInput("");
-      // Simulate bot response
-      setTimeout(() => {
-        const botMessage = { sender: "bot", text: "This is a bot response." };
-        setMessages(prevMessages => [...prevMessages, botMessage]);
-      }, 1000);
-    }
-  };
-
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
-
-  return (
-    <div className="chat-screen">
-      <div className="hamburger-menu" onClick={toggleChat}>
-        <FontAwesomeIcon icon={isChatOpen ? faTimes : faBars} />
-      </div>
-      <div className={`chat-content ${isChatOpen ? "open" : ""}`}>
-        <h3>Live Conversation</h3>
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <div key={index} className={`chat-message ${message.sender}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
-        <div className="chat-input">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Type a message..."
-          />
-          <button onClick={handleSend}>
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+.upload-container{
+  background-color: rgba(0, 0, 0, 0.5);
+  margin:80px 0 0 10px;
+  border-radius: 10px;
+    width:300px;
 }
 
-
-
-
-
-
-
-.chat-screen {
-  position: relative;
-  font-family: 'Arial', sans-serif;
+.upload-container h3{
+    text-align: center;
+    color:#fff;
 }
 
-.hamburger-menu {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  z-index: 1000;
-  transition: transform 0.3s;
+h3 {
+    text-align: center;
+    margin: 10px 0;
+    color: #fff;
 }
 
-.hamburger-menu:hover {
-  transform: scale(1.1);
+.chat-content{
+  display: column;
+  align-items: center;
+  justify-content: center;
 }
-
-.chat-content {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 350px; /* Adjust width as needed */
-  height: 100%;
-  background-color: #fff;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-  transition: left 0.5s ease-in-out, box-shadow 0.5s;
-  z-index: 999;
-}
-
-.chat-content.open {
-  left: 0;
-  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-}
-
 .chat-messages {
-  padding: 20px;
-  overflow-y: auto;
-  height: calc(100% - 80px); /* Adjust height based on other content */
-  background-color: #f9f9f9;
-}
-
-.chat-input {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  padding: 10px;
-  box-sizing: border-box;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-}
-
-.chat-input input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-  transition: box-shadow 0.3s;
-}
-
-.chat-input input:focus {
-  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
-}
-
-.chat-input button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  margin-left: 10px;
-  color: #007bff;
-  transition: color 0.3s;
-}
-
-.chat-input button:hover {
-  color: #0056b3;
+    flex: 1;
+    /*height: 250px;*/
+    max-height: 250px;
+    padding: 10px;
+    margin: 60px 20px;
+    border-radius: 5px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
 }
 
 .chat-message {
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 80%;
-  word-wrap: break-word;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.chat-message.user {
-  background-color: #d1e7ff;
-  align-self: flex-end;
-  margin-left: auto;
-}
-
-.chat-message.bot {
-  background-color: #e9ecef;
-  align-self: flex-start;
-  margin-right: auto;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+    }
+}
+
+.chat-message.user {
+    background-color: #d1e7dd;
+    text-align: right;
+}
+
+.chat-message.bot {
+    background-color: #f8d7da;
+    text-align: left;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 24px;
+    background: linear-gradient(90deg, #6f36cd 0%, #1f77f6 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.chat-input button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import "./ChatScreen.css"
+
+export function ChatScreen(){
+    const [messages, setMessages] = useState([]);
+    const [userInput, setUserInput] = useState("");
+    const handleSend = () => {
+        if (userInput.trim()) {
+            const newMessage = { sender: "user", text: userInput };
+            setMessages([...messages, newMessage]);
+            setUserInput("");
+            // Simulate bot response
+            setTimeout(() => {
+                const botMessage = { sender: "bot", text: "This is a bot response." };
+                setMessages(prevMessages => [...prevMessages, botMessage]);
+            }, 1000);
+        }
+    };
+    
+
+    
+    return <div className="upload-container">
+       <div className="chat-content">
+                <h3>Live Conversation</h3>
+                <div className="chat-messages">
+                    {messages.map((message, index) => (
+                        <div key={index} className={`chat-message ${message.sender}`}>
+                            {message.text}
+                        </div>
+                    ))}
+                </div>
+                <div className="chat-input">
+                    <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                        placeholder="Type a message..."
+                    />
+                    <button onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
+                </div>
+            </div>
+    </div>
 }
