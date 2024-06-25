@@ -18,7 +18,7 @@ export function Chat({ onQuestionClick }) {
         "School Placements": "Description for School Placements...",
         "Teaching Methodology": "Description for Teaching Methodology...",
         "SEN/Disability": "Description for SEN/Disability...",
-        "Enrichment & Extra Curr.": "Description for Enrichment & Extra Curricular...",
+        "Enrichment & Extra Curr.": "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?",
         "Transportation": "Description for Transportation..."
     };
 
@@ -45,6 +45,7 @@ export function Chat({ onQuestionClick }) {
 
     return (
         <div className="chat-container">
+            <h1>Most Question</h1>
             <div className="hamburger-menu" onClick={toggleQuestions}>
                 <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
             </div>
@@ -97,7 +98,14 @@ export function Chat({ onQuestionClick }) {
     position: relative;
     overflow: hidden;
 }
-
+.chat-container h1{
+    text-align: left;
+    /*margin: 0;*/
+    margin-left: 42px;
+    margin-top: 12px;
+    font-size: 22px;
+    color: #fff;
+}
 .hamburger-menu {
     position: absolute;
     top: 10px;
@@ -210,7 +218,7 @@ export function Chat({ onQuestionClick }) {
 
 .selected-question .toggle-icon {
     font-size: 18px;
-    color: #000;
+    color: #fff;
 }
 
 .selected-question p {
@@ -220,6 +228,7 @@ export function Chat({ onQuestionClick }) {
 }
 
 .selected-question.expanded p {
+    color: #ccc;
     display: block;
 }
 
