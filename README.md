@@ -60,7 +60,12 @@ export function Chat({ onQuestionClick }) {
             </div>
             <div className="selected-questions">
                 {selectedQuestions.map((question, index) => (
-                    <div key={index} className="selected-question" onClick={() => toggleExpand(question)}>
+                    <div 
+                        key={index} 
+                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`} 
+                        onClick={() => toggleExpand(question)}
+                        aria-expanded={expandedQuestions[question]}
+                    >
                         <h4>{question}</h4>
                         {expandedQuestions[question] && (
                             <p>{questionDescriptions[question]}</p>
@@ -71,11 +76,6 @@ export function Chat({ onQuestionClick }) {
         </div>
     );
 }
-
-
-
-
-
 
 .chat-container {
     background-color: rgba(0, 0, 0, 0.5);
@@ -138,7 +138,7 @@ export function Chat({ onQuestionClick }) {
     padding: 10px 20px;
     font-size: 14px;
     font-weight: 500;
-    margin: 5px 0px;
+    margin: 5px 0;
     background-color: #fff;
     color: #000;
     border-radius: 4px;
@@ -156,64 +156,4 @@ export function Chat({ onQuestionClick }) {
 .selected-questions {
     margin-top: 80px;
     overflow-y: auto;
-    padding: 10px;
-    flex-grow: 1;
-}
-
-.selected-questions::-webkit-scrollbar {
-    width: 8px;
-}
-
-.selected-questions::-webkit-scrollbar-thumb {
-    background-color: rgba(111, 54, 205, 0.8);
-    border-radius: 10px;
-}
-
-.selected-questions::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(111, 54, 205, 1);
-}
-
-.selected-questions::-webkit-scrollbar-track {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-.selected-question {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
-    color: #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.selected-question h4 {
-    margin: 0;
-}
-
-.selected-question p {
-    margin: 10px 0 0;
-    display: none;
-    animation: fadeIn 0.3s ease-in-out forwards;
-}
-
-.selected-question:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.selected-question[aria-expanded="true"] p {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-
+    padding:
