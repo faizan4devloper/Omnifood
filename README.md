@@ -44,3 +44,10 @@ export function ChatScreen(){
             </div>
     </div>
 }
+<div className={`chat-messages ${conversationStarted ? 'show' : ''}`}>
+    {messages.map((message, index) => (
+        <div key={index} className={`chat-message ${message.sender}`}>
+            {message.text}
+        </div>
+    ))}
+</div>
