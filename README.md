@@ -343,3 +343,20 @@ const toggleDescription = (descIndex) => {
         opacity: 1;
     }
 }
+const toggleExpandDescription = (question, index) => {
+    // Create an object to track the expanded state of all descriptions
+    const newExpandedDescriptions = {};
+
+    // Toggle the clicked description
+    newExpandedDescriptions[`${question}-${index}`] = !expandedDescriptions[`${question}-${index}`];
+
+    // Collapse all other descriptions
+    Object.keys(expandedDescriptions).forEach((key) => {
+        if (key !== `${question}-${index}`) {
+            newExpandedDescriptions[key] = false;
+        }
+    });
+
+    // Update the state with the new expanded descriptions
+    setExpandedDescriptions(newExpandedDescriptions);
+};
