@@ -1,82 +1,3 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./Chat.css";
-
-export function Chat({ onQuestionClick }) {
-    const mostAskedQuestions = [
-        "School Transfers",
-        "School Placements",
-        "Teaching Methodology",
-        "SEN/Disability",
-        "Enrichment & Extra Curr.",
-        "Transportation"
-    ];
-
-    const questionDescriptions = {
-        "School Transfers": "Description for School Transfers...",
-        "School Placements": "Description for School Placements...",
-        "Teaching Methodology": "Description for Teaching Methodology...",
-        "SEN/Disability": "Description for SEN/Disability...",
-        "Enrichment & Extra Curr.": "Description for Enrichment & Extra Curricular...",
-        "Transportation": "Description for Transportation..."
-    };
-
-    const [showQuestions, setShowQuestions] = useState(false);
-    const [selectedQuestions, setSelectedQuestions] = useState([]);
-    const [expandedQuestions, setExpandedQuestions] = useState({});
-
-    const handleQuestionClick = (question) => {
-        setShowQuestions(false);
-        setSelectedQuestions([question, ...selectedQuestions]);
-        onQuestionClick(question);
-    };
-
-    const toggleQuestions = () => {
-        setShowQuestions(!showQuestions);
-    };
-
-    const toggleExpand = (question) => {
-        setExpandedQuestions((prevExpanded) => ({
-            ...prevExpanded,
-            [question]: !prevExpanded[question],
-        }));
-    };
-
-    return (
-        <div className="chat-container">
-            <div className="hamburger-menu" onClick={toggleQuestions}>
-                <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
-            </div>
-            <div className={`most-asked-questions ${showQuestions ? 'show' : ''}`}>
-                <h4>Most Asked Questions</h4>
-                <ul>
-                    {mostAskedQuestions.map((question, index) => (
-                        <li key={index} onClick={() => handleQuestionClick(question)}>
-                            {question}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className="selected-questions">
-                {selectedQuestions.map((question, index) => (
-                    <div 
-                        key={index} 
-                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`} 
-                        onClick={() => toggleExpand(question)}
-                        aria-expanded={expandedQuestions[question]}
-                    >
-                        <h4>{question}</h4>
-                        {expandedQuestions[question] && (
-                            <p>{questionDescriptions[question]}</p>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-}
-
 .chat-container {
     background-color: rgba(0, 0, 0, 0.5);
     margin: 80px 0 0 10px;
@@ -156,4 +77,58 @@ export function Chat({ onQuestionClick }) {
 .selected-questions {
     margin-top: 80px;
     overflow-y: auto;
-    padding:
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.selected-questions::-webkit-scrollbar {
+    width: 8px;
+}
+
+.selected-questions::-webkit-scrollbar-thumb {
+    background-color: rgba(111, 54, 205, 0.8);
+    border-radius: 10px;
+}
+
+.selected-questions::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(111, 54, 205, 1);
+}
+
+.selected-questions::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.selected-question {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.selected-question h4 {
+    margin: 0;
+}
+
+.selected-question p {
+    margin: 10px 0 0;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.selected-question.expanded p {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
