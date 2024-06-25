@@ -1,74 +1,3 @@
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./ChatScreen.css";
-
-export function ChatScreen({ selectedQuestion }) {
-  const [messages, setMessages] = useState([]);
-  const [userInput, setUserInput] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedQuestion) {
-      const newMessage = { sender: "user", text: selectedQuestion };
-      setMessages([...messages, newMessage]);
-    }
-  }, [selectedQuestion]);
-
-  const handleSend = () => {
-    if (userInput.trim()) {
-      const newMessage = { sender: "user", text: userInput };
-      setMessages([...messages, newMessage]);
-      setUserInput("");
-      // Simulate bot response
-      setTimeout(() => {
-        const botMessage = { sender: "bot", text: "This is a bot response." };
-        setMessages(prevMessages => [...prevMessages, botMessage]);
-      }, 1000);
-    }
-  };
-
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
-
-  return (
-    <div className="chat-screen">
-      <div className="hamburger-menu" onClick={toggleChat}>
-        <FontAwesomeIcon icon={isChatOpen ? faTimes : faBars} />
-      </div>
-      <div className={`chat-content ${isChatOpen ? "open" : ""}`}>
-        <h3>Live Conversation</h3>
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <div key={index} className={`chat-message ${message.sender}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
-        <div className="chat-input">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Type a message..."
-          />
-          <button onClick={handleSend}>
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -84,9 +13,11 @@ export function Chat({ onQuestionClick }) {
         "Transportation"
     ]);
     const [showQuestions, setShowQuestions] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
+        setSelectedQuestion(question);
         onQuestionClick(question);
     };
 
@@ -109,9 +40,16 @@ export function Chat({ onQuestionClick }) {
                     ))}
                 </ul>
             </div>
+            {selectedQuestion && (
+                <div className="selected-question">
+                    <h4>Selected Question:</h4>
+                    <p>{selectedQuestion}</p>
+                </div>
+            )}
         </div>
     );
 }
+
 
 
 
@@ -197,80 +135,20 @@ export function Chat({ onQuestionClick }) {
     transform: scale(1.05);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.selected-question {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+    color: #000;
+    z-index: 1;
 }
 
+.selected-question h4 {
+    margin-bottom: 10px;
+}
 
-
-
-
-
-
-
-
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./ChatScreen.css";
-
-export function ChatScreen({ selectedQuestion }) {
-  const [messages, setMessages] = useState([]);
-  const [userInput, setUserInput] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedQuestion) {
-      const newMessage = { sender: "user", text: selectedQuestion };
-      setMessages([...messages, newMessage]);
-    }
-  }, [selectedQuestion]);
-
-  const handleSend = () => {
-    if (userInput.trim()) {
-      const newMessage = { sender: "user", text: userInput };
-      setMessages([...messages, newMessage]);
-      setUserInput("");
-      // Simulate bot response
-      setTimeout(() => {
-        const botMessage = { sender: "bot", text: "This is a bot response." };
-        setMessages(prevMessages => [...prevMessages, botMessage]);
-      }, 1000);
-    }
-  };
-
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
-
-  return (
-    <div className="chat-screen">
-      <div className="hamburger-menu" onClick={toggleChat}>
-        <FontAwesomeIcon icon={isChatOpen ? faTimes : faBars} />
-      </div>
-      <div className={`chat-content ${isChatOpen ? "open" : ""}`}>
-        <h3>Live Conversation</h3>
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <div key={index} className={`chat-message ${message.sender}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
-        <div className="chat-input">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Type a message..."
-          />
-          <button onClick={handleSend}>
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+.selected-question p {
+    margin: 0;
 }
