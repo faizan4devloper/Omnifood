@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+   import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import "./Chat.css";
@@ -61,13 +61,13 @@ export function Chat({ onQuestionClick }) {
     const schoolNames = ["Cayley", "Mayflower", "Virginia"];
 
     const [showQuestions, setShowQuestions] = useState(false);
-    const [selectedQuestions, setSelectedQuestions] = useState([]);
-    const [expandedQuestion, setExpandedQuestion] = useState(null);
-    const [expandedDescription, setExpandedDescription] = useState(null);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [expandedQuestions, setExpandedQuestions] = useState({});
+    const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
-        setSelectedQuestions([question, ...selectedQuestions]);
+        setSelectedQuestion(question);
         onQuestionClick(question);
     };
 
@@ -75,22 +75,18 @@ export function Chat({ onQuestionClick }) {
         setShowQuestions(!showQuestions);
     };
 
-    const toggleExpandQuestion = (question) => {
-        if (expandedQuestion === question) {
-            setExpandedQuestion(null);
-            setExpandedDescription(null);
-        } else {
-            setExpandedQuestion(question);
-            setExpandedDescription(null);
-        }
+    const toggleExpand = (question) => {
+        setExpandedQuestions((prevExpanded) => ({
+            ...prevExpanded,
+            [question]: !prevExpanded[question],
+        }));
     };
 
     const toggleExpandDescription = (question, index) => {
-        if (expandedDescription === index) {
-            setExpandedDescription(null);
-        } else {
-            setExpandedDescription(index);
-        }
+        setExpandedDescriptions((prevExpanded) => ({
+            ...prevExpanded,
+            [`${question}-${index}`]: !prevExpanded[`${question}-${index}`],
+        }));
     };
 
     return (
@@ -110,30 +106,29 @@ export function Chat({ onQuestionClick }) {
                 </ul>
             </div>
             <div className="selected-questions">
-                {selectedQuestions.map((question, index) => (
+                {selectedQuestion && (
                     <div
-                        key={index}
-                        className={`selected-question ${expandedQuestion === question ? 'expanded' : ''}`}
-                        onClick={() => toggleExpandQuestion(question)}
-                        aria-expanded={expandedQuestion === question}
+                        className={`selected-question ${expandedQuestions[selectedQuestion] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(selectedQuestion)}
+                        aria-expanded={expandedQuestions[selectedQuestion]}
                     >
                         <div className="question-header">
-                            <h4>{question}</h4>
+                            <h4>{selectedQuestion}</h4>
                             <FontAwesomeIcon
-                                icon={expandedQuestion === question ? faChevronUp : faChevronDown}
+                                icon={expandedQuestions[selectedQuestion] ? faChevronUp : faChevronDown}
                                 className="toggle-icon"
                             />
                         </div>
-                        {expandedQuestion === question && (
+                        {expandedQuestions[selectedQuestion] && (
                             <div className="descriptions">
-                                {questionDescriptions[question].map((desc, idx) => (
+                                {questionDescriptions[selectedQuestion].map((desc, idx) => (
                                     <div
                                         key={idx}
-                                        className={`description ${expandedDescription === idx ? 'expanded' : ''}`}
-                                        onClick={() => toggleExpandDescription(question, idx)}
+                                        className={`description ${expandedDescriptions[`${selectedQuestion}-${idx}`] ? 'expanded' : ''}`}
+                                        onClick={() => toggleExpandDescription(selectedQuestion, idx)}
                                     >
                                         <p>{desc}</p>
-                                        {expandedDescription === idx && (
+                                        {expandedDescriptions[`${selectedQuestion}-${idx}`] && (
                                             <ul>
                                                 {schoolNames.map((school, schoolIdx) => (
                                                     <li key={schoolIdx}>{school}</li>
@@ -145,11 +140,19 @@ export function Chat({ onQuestionClick }) {
                             </div>
                         )}
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );
-} 
+}
+
+
+
+
+
+
+
+
 
 .chat-container {
     background-color: rgba(0, 0, 0, 0.5);
@@ -333,4 +336,13 @@ export function Chat({ onQuestionClick }) {
     to {
         opacity: 1;
     }
+}
+
+/* Hide other questions when one is selected */
+.selected-question:not(.expanded) .description {
+    display: none;
+}
+
+.selected-question.expanded .description {
+    display: block;
 }
