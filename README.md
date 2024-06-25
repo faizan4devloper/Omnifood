@@ -14,21 +14,60 @@ export function Chat({ onQuestionClick }) {
     ];
 
     const questionDescriptions = {
-        "School Transfers": ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5"],
-        "School Placements": ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5"],
-        "Teaching Methodology": ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5"],
-        "SEN/Disability": ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5"],
-        "Enrichment & Extra Curr.": ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5"],
-        "Transportation": ["Description 1", "Description 2", "Description 3", "Description 4", "Description 5"]
+        "School Transfers": [
+           "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+        ],
+        "School Placements": [
+           "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+        ],
+        "Teaching Methodology": [
+            "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+        ],
+        "SEN/Disability": [
+           "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+        ],
+        "Enrichment & Extra Curr.": [
+            "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+        ],
+        "Transportation": [
+            "Can you help me with Local Authority school in this region along with Parent rating?",
+"What are the admission criteria for the schools in this area? How do they prioritize applications?",
+"What are the average class sizes and student-teacher ratios in the local schools?",
+"What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+"What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+        ]
     };
 
+    const schoolNames = ["Cayley", "Mayflower", "Virginia"];
+
     const [showQuestions, setShowQuestions] = useState(false);
-    const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [selectedQuestions, setSelectedQuestions] = useState([]);
+    const [expandedQuestions, setExpandedQuestions] = useState({});
     const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
     const handleQuestionClick = (question) => {
         setShowQuestions(false);
-        setSelectedQuestion(question);
+        setSelectedQuestions([question, ...selectedQuestions]);
         onQuestionClick(question);
     };
 
@@ -36,21 +75,28 @@ export function Chat({ onQuestionClick }) {
         setShowQuestions(!showQuestions);
     };
 
-    const toggleExpand = (description) => {
+    const toggleExpand = (question) => {
+        setExpandedQuestions((prevExpanded) => ({
+            ...prevExpanded,
+            [question]: !prevExpanded[question],
+        }));
+    };
+
+    const toggleExpandDescription = (question, index) => {
         setExpandedDescriptions((prevExpanded) => ({
             ...prevExpanded,
-            [description]: !prevExpanded[description],
+            [`${question}-${index}`]: !prevExpanded[`${question}-${index}`],
         }));
     };
 
     return (
         <div className="chat-container">
-            <h1>Most Questions</h1>
+            <h1>Frequently Inquired Topics</h1>
             <div className="hamburger-menu" onClick={toggleQuestions}>
                 <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
             </div>
             <div className={`most-asked-questions ${showQuestions ? 'show' : ''}`}>
-                <h4>Most Asked Questions</h4>
+                <h4>Frequently Inquired Topics</h4>
                 <ul>
                     {mostAskedQuestions.map((question, index) => (
                         <li key={index} onClick={() => handleQuestionClick(question)}>
@@ -60,32 +106,46 @@ export function Chat({ onQuestionClick }) {
                 </ul>
             </div>
             <div className="selected-questions">
-                {selectedQuestion && (
-                    <div key={selectedQuestion} className="selected-question expanded">
-                        <h4>{selectedQuestion}</h4>
-                        {questionDescriptions[selectedQuestion].map((description, index) => (
-                            <div key={index} className={`description ${expandedDescriptions[description] ? 'expanded' : ''}`} onClick={() => toggleExpand(description)}>
-                                <div className="description-header">
-                                    <p>{description}</p>
-                                    <FontAwesomeIcon icon={expandedDescriptions[description] ? faChevronUp : faChevronDown} className="toggle-icon" />
-                                </div>
-                                {expandedDescriptions[description] && (
-                                    <ul>
-                                        <li>School 1</li>
-                                        <li>School 2</li>
-                                        <li>School 3</li>
-                                    </ul>
-                                )}
+                {selectedQuestions.map((question, index) => (
+                    <div
+                        key={index}
+                        className={`selected-question ${expandedQuestions[question] ? 'expanded' : ''}`}
+                        onClick={() => toggleExpand(question)}
+                        aria-expanded={expandedQuestions[question]}
+                    >
+                        <div className="question-header">
+                            <h4>{question}</h4>
+                            <FontAwesomeIcon
+                                icon={expandedQuestions[question] ? faChevronUp : faChevronDown}
+                                className="toggle-icon"
+                            />
+                        </div>
+                        {expandedQuestions[question] && (
+                            <div className="descriptions">
+                                {questionDescriptions[question].map((desc, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`description ${expandedDescriptions[`${question}-${idx}`] ? 'expanded' : ''}`}
+                                        onClick={() => toggleExpandDescription(question, idx)}
+                                    >
+                                        <p>{desc}</p>
+                                        {expandedDescriptions[`${question}-${idx}`] && (
+                                            <ul>
+                                                {schoolNames.map((school, schoolIdx) => (
+                                                    <li key={schoolIdx}>{school}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        )}
                     </div>
-                )}
+                ))}
             </div>
         </div>
     );
 }
-
-
 
 
 
@@ -206,6 +266,7 @@ export function Chat({ onQuestionClick }) {
     margin-bottom: 10px;
     box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
     color: #000;
+    cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
@@ -213,12 +274,31 @@ export function Chat({ onQuestionClick }) {
     margin: 0;
 }
 
-.selected-question.expanded h4 {
-    display: block;
+.selected-question .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.selected-question .description {
-    background-color: #f5f5f5;
+.selected-question .toggle-icon {
+    font-size: 18px;
+}
+
+.selected-question p {
+    margin: 10px 0 0;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.selected-question.expanded p {
+    display: block;
+    transition: 0.1s ease-in;
+}
+.selected-question.expanded p:hover{
+    color: #000;
+}
+.description {
+    /*background-color: #f5f5f5;*/
     padding: 8px;
     border-radius: 4px;
     margin: 8px 0;
@@ -226,25 +306,15 @@ export function Chat({ onQuestionClick }) {
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.selected-question .description:hover {
-    background-color: #ddd;
+.description:hover {
+    /*background-color: #ddd;*/
 }
 
-.selected-question .description .description-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.selected-question .description .toggle-icon {
-    font-size: 18px;
-}
-
-.selected-question .description.expanded ul {
+.description.expanded ul {
     display: block;
 }
 
-.selected-question .description ul {
+.description ul {
     list-style: none;
     padding: 0;
     margin: 10px 0 0;
@@ -252,9 +322,10 @@ export function Chat({ onQuestionClick }) {
     animation: fadeIn 0.3s ease-in-out forwards;
 }
 
-.selected-question .description ul li {
+.description ul li {
     background-color: #e0e0e0;
     padding: 5px;
+    color: #000;
     border-radius: 4px;
     margin: 5px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
