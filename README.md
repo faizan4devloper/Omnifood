@@ -409,3 +409,118 @@ export function Insights() {
         </div>
     );
 }
+
+
+
+import React, { useState } from "react";
+import "./Insights.css";
+
+export function Insights({ schoolName }) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedReview, setSelectedReview] = useState(null);
+
+    // Placeholder data for different types of insights
+    const reviewData = [
+        { id: 1, name: "John Doe", photo: "path_to_photo1.jpg", review: "Great insights on school transfers!" },
+        { id: 2, name: "Jane Smith", photo: "path_to_photo2.jpg", review: "Very helpful information on SEN/Disability." }
+    ];
+
+    const ofstedRatings = {
+        overall: "Good",
+        leadership: "Outstanding",
+        behavior: "Good",
+        outcomes: "Requires improvement",
+        earlyYears: "Outstanding"
+    };
+
+    const admissionTrends = [
+        { year: 2021, applications: 200, offers: 150 },
+        { year: 2020, applications: 180, offers: 140 },
+        { year: 2019, applications: 160, offers: 130 }
+    ];
+
+    const termsPlan = [
+        { term: "Autumn", start: "September", end: "December" },
+        { term: "Spring", start: "January", end: "March" },
+        { term: "Summer", start: "April", end: "July" }
+    ];
+
+    const handleReviewClick = (review) => {
+        setSelectedReview(review);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedReview(null);
+    };
+
+    return (
+        <div className="insights-container">
+            <h3>Insights for {schoolName}</h3>
+            <div className="insight-section">
+                <h4>Parents' Reviews</h4>
+                {reviewData.map((review) => (
+                    <div key={review.id} className="review" onClick={() => handleReviewClick(review)}>
+                        <img src={review.photo} alt={review.name} className="review-photo" />
+                        <p>{review.name}</p>
+                    </div>
+                ))}
+            </div>
+
+            <div className="insight-section">
+                <h4>Ofsted Ratings</h4>
+                <ul>
+                    {Object.entries(ofstedRatings).map(([category, rating]) => (
+                        <li key={category}>
+                            {category}: {rating}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <div className="insight-section">
+                <h4>Admission Trends</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Applications</th>
+                            <th>Offers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {admissionTrends.map(({ year, applications, offers }) => (
+                            <tr key={year}>
+                                <td>{year}</td>
+                                <td>{applications}</td>
+                                <td>{offers}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="insight-section">
+                <h4>Terms Plan</h4>
+                <ul>
+                    {termsPlan.map(({ term, start, end }) => (
+                        <li key={term}>
+                            {term}: {start} - {end}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {isModalOpen && selectedReview && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close-button" onClick={closeModal}>&times;</span>
+                        <h4>{selectedReview.name}</h4>
+                        <p>{selectedReview.review}</p>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
