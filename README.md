@@ -1,16 +1,9 @@
-.selected-question.expanded p{
-    
-}
-const toggleExpandDescription = (question, index) => {
-  const newExpandedDescriptions = {};
-  newExpandedDescriptions[`${question}-${index}`] = !expandedDescriptions[`${question}-${index}`];
+Can you help me with Local Authority school in this region along with Parent rating?
 
-  // Collapse all other descriptions under the same question
-  questionDescriptions[question].forEach((_, idx) => {
-    if (idx !== index) {
-      newExpandedDescriptions[`${question}-${idx}`] = false;
-    }
-  });
+What are the admission criteria for the schools in this area? How do they prioritize applications?
 
-  setExpandedDescriptions(newExpandedDescriptions);
-};
+What are the average class sizes and student-teacher ratios in the local schools?
+
+What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?
+
+What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?
