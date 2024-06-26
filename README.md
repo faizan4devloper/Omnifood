@@ -783,3 +783,181 @@ export function Chat({ onQuestionClick, onSchoolClick }) {
         </div>
     );
 }
+
+
+
+
+
+
+
+{
+  "mostAskedQuestions": [
+    "School Transfers",
+    "School Placements",
+    "Teaching Methodology",
+    "SEN/Disability",
+    "Enrichment & Extra Curr.",
+    "Transportation"
+  ],
+  "questionDescriptions": {
+    "School Transfers": [
+      "Can you help me with Local Authority school in this region along with Parent rating?",
+      "What are the admission criteria for the schools in this area? How do they prioritize applications?",
+      "What are the average class sizes and student-teacher ratios in the local schools?",
+      "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+      "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+    ],
+    "School Placements": [
+      "Can you help me with Local Authority school in this region along with Parent rating?",
+      "What are the admission criteria for the schools in this area? How do they prioritize applications?",
+      "What are the average class sizes and student-teacher ratios in the local schools?",
+      "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+      "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+    ],
+    "Teaching Methodology": [
+      "Can you help me with Local Authority school in this region along with Parent rating?",
+      "What are the admission criteria for the schools in this area? How do they prioritize applications?",
+      "What are the average class sizes and student-teacher ratios in the local schools?",
+      "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+      "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+    ],
+    "SEN/Disability": [
+      "Can you help me with Local Authority school in this region along with Parent rating?",
+      "What are the admission criteria for the schools in this area? How do they prioritize applications?",
+      "What are the average class sizes and student-teacher ratios in the local schools?",
+      "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+      "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+    ],
+    "Enrichment & Extra Curr.": [
+      "Can you help me with Local Authority school in this region along with Parent rating?",
+      "What are the admission criteria for the schools in this area? How do they prioritize applications?",
+      "What are the average class sizes and student-teacher ratios in the local schools?",
+      "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+      "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+    ],
+    "Transportation": [
+      "Can you help me with Local Authority school in this region along with Parent rating?",
+      "What are the admission criteria for the schools in this area? How do they prioritize applications?",
+      "What are the average class sizes and student-teacher ratios in the local schools?",
+      "What is the academic performance of the schools in this area, as measured by exam results, Ofsted ratings, and other relevant metrics?",
+      "What extracurricular activities and clubs are available at the local schools? Are there any specialized programs or facilities?"
+    ]
+  },
+  "schoolNames": ["Cayley", "Mayflower", "Virginia"]
+}
+
+
+
+
+
+
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import "./Chat.css";
+
+export function Chat({ onQuestionClick, onSchoolClick }) {
+    const [data, setData] = useState(null);
+    const [showQuestions, setShowQuestions] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
+    const [expandedQuestions, setExpandedQuestions] = useState({});
+    const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+    useEffect(() => {
+        fetch('/data.json')
+            .then(response => response.json())
+            .then(data => setData(data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    const handleQuestionClick = (question) => {
+        setShowQuestions(false);
+        setSelectedQuestion(question);
+        onQuestionClick(question);
+    };
+
+    const handleSchoolClick = (school) => {
+        onSchoolClick(school);
+    };
+
+    const toggleQuestions = () => {
+        setShowQuestions(!showQuestions);
+    };
+
+    const toggleExpand = (question) => {
+        setExpandedQuestions((prevExpanded) => ({
+            ...prevExpanded,
+            [question]: !prevExpanded[question],
+        }));
+    };
+
+    const toggleExpandDescription = (question, index) => {
+        setExpandedDescriptions((prevExpandedDescriptions) => ({
+            ...prevExpandedDescriptions,
+            [`${question}-${index}`]: !prevExpandedDescriptions[`${question}-${index}`]
+        }));
+    };
+
+    return (
+        <div className="chat-container">
+            <h1>Frequently Inquired Topics</h1>
+            <div className="hamburger-menu" onClick={toggleQuestions}>
+                <FontAwesomeIcon icon={showQuestions ? faTimes : faBars} />
+            </div>
+            <div className={`most-asked-questions ${showQuestions ? 'show' : ''}`}>
+                <h4>Frequently Inquired Topics</h4>
+                <ul>
+                    {data.mostAskedQuestions.map((question, index) => (
+                        <li key={index} onClick={() => handleQuestionClick(question)}>
+                            {question}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="selected-questions">
+                {selectedQuestion && (
+                    <div
+                        key={selectedQuestion}
+                        className={`selected-question ${expandedQuestions[selectedQuestion] ? 'expanded' : ''}`}
+                        aria-expanded={expandedQuestions[selectedQuestion]}
+                    >
+                        <div className="question-header">
+                            <h4>{selectedQuestion}</h4>
+                            <FontAwesomeIcon
+                                icon={expandedQuestions[selectedQuestion] ? faChevronUp : faChevronDown}
+                                className="toggle-icon"
+                                onClick={() => toggleExpand(selectedQuestion)}
+                            />
+                        </div>
+                        {expandedQuestions[selectedQuestion] && (
+                            <div className="descriptions active">
+                                {data.questionDescriptions[selectedQuestion].map((desc, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`description ${expandedDescriptions[`${selectedQuestion}-${idx}`] ? 'expanded' : ''}`}
+                                        onClick={() => toggleExpandDescription(selectedQuestion, idx)}
+                                    >
+                                        <p>{desc}</p>
+                                        {expandedDescriptions[`${selectedQuestion}-${idx}`] && (
+                                            <ul>
+                                                {data.schoolNames.map((school, schoolIdx) => (
+                                                    <li key={schoolIdx} onClick={() => handleSchoolClick(school)}>
+                                                        {school}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
